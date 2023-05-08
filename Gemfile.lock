@@ -1,0 +1,50 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.5.0)
+    multi_json (1.15.0)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    rack (2.2.7)
+    rack-protection (3.0.6)
+      rack
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
+    rspec-core (3.12.2)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-support (3.12.0)
+    ruby2_keywords (0.0.5)
+    sinatra (3.0.6)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.6)
+      tilt (~> 2.0)
+    sinatra-contrib (3.0.6)
+      multi_json
+      mustermann (~> 3.0)
+      rack-protection (= 3.0.6)
+      sinatra (= 3.0.6)
+      tilt (~> 2.0)
+    tilt (2.1.0)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  rspec (~> 3.12)
+  sinatra (~> 3.0)
+  sinatra-contrib (~> 3.0)
+
+RUBY VERSION
+   ruby 3.0.0p0
+
+BUNDLED WITH
+   2.4.2
