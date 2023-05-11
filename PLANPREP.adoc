@@ -7,7 +7,7 @@ Benjamin Neustadt
 :icons: font
 :listing-caption: Listing
 :sectnums:
-:source-language: ruby
+:source-language: txt
 :sourcedir: assets
 :imagesdir: ./assets/
 :toc: right
@@ -180,3 +180,127 @@ Dependent on the desired outcome, it might be an idea to consider users paying a
 The reasonining is simple, hosting images online securely is not free
 - as an example there isn't anywhere I can think of where you can go and dump a bag of your belongings and expect them to remain unscathed, unborrowed, unused if you leave them overnight.
 Ultimately the same will apply to the internet.
+
+
+== User Stories
+
+=== User sign-up and log-in specific
+
+----
+As a user
+So that I can use Folio
+I need to be able to sign-up
+----
+
+----
+As a user
+So that I can start a Folio session
+I need to be able to log-in
+----
+
+----
+As a user
+So that I can finish a Folio session
+I need to be able to log-out
+----
+
+----
+As a user
+So that I can cancel my account
+I need to be able to delete my Folio account and content
+----
+
+----
+As a user
+So that I can cancel my account with certainty
+I need to be asked to confirm deletion of my account
+----
+
+=== Image upload specific
+
+----
+As a user
+So that I can post content to my profile
+I need to be able to upload images
+----
+
+----
+As a user
+So that I can be sure my upload worked
+I need to be given confirmation that the image was uploaded
+----
+
+----
+As a user
+So that I can post content to my profile with context
+I need to be able to write a caption with the content
+----
+
+----
+As a user
+So that I can post content to my profile with context
+I need to be able to choose data is displayed alongside the caption (i.e. date)
+----
+
+----
+As a user
+So that I can view content 
+I need to be able to view content I have uploaded
+----
+
+----
+As a user
+So that I can change my mind
+I need to be able to modify the caption or details of content I have uploaded
+----
+
+----
+As a user
+So that I can change my mind on what I show
+I need to be able to delete content that I uploaded previously
+----
+
+----
+As a user
+So that I can view content with time relevant context
+I need to be able to view content by order of upload
+----
+
+----
+As a user
+So that I can build a community
+I need to be able to subscribe to other users
+----
+
+----
+As a user
+So that I can maintain a community and relations
+I need to be able to be able to communicate with other users via chat
+----
+
+----
+As a user
+So that the interface resonates with me
+I need to be able to customize my own profile (EG: colours, banner)
+----
+
+===  MAP specific
+
+----
+As a user
+So that I can view content with geographical context
+I need to be able to view content I have uploaded on the map
+----
+
+----
+As a user
+So that I can search for images within a location
+I need to be able to hone my search for images that I am searching for
+----
+
+== Front-end sandbox ideas
+
+A submit button that wont let you click it unless the content is inserted
+https://github.com/Jaay06/fun-form-validation.git
+
+== Back-end sandbox ideas
