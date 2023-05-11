@@ -1,0 +1,19 @@
+= Folio web application 
+Benjamin Neustadt
+:copyright: © 2023
+:doctype: article
+:experimental:
+:header_footer: true
+:icons: font
+:listing-caption: Listing
+:sectnums:
+:source-language: ruby
+:sourcedir: assets
+:imagesdir: ./assets/
+:toc: right
+:source-linenums-option: true
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+
+
+Refer to 'PLANPREP' for the planning elements of project.

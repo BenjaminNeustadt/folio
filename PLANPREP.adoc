@@ -1,0 +1,182 @@
+= Planning preparation
+Benjamin Neustadt
+:copyright: © 2023
+:doctype: article
+:experimental:
+:header_footer: true
+:icons: font
+:listing-caption: Listing
+:sectnums:
+:source-language: ruby
+:sourcedir: assets
+:imagesdir: ./assets/
+:toc: right
+:source-linenums-option: true
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+// URLS
+:url-wireframes: https://wireframepro.mockflow.com/editor.jsp?editor=on&spaceid=MOZ46Ouzcpb&bgcolor=white&perm=Create&pcompany=C9881467f77ac4751b2d1ef58bcf56e59&ptitle=Wireframe&store=yes&category=M8109b08cbb31f7575d869e0b164269401681294000748&projectid=MBVd44JDHh&publicid=d654da6faaa443dcaba282d34c933800#/page/D8bc39e504612c1a86f93aa4f7e5d2a26
+:url-overview-diagram: https://excalidraw.com/#json=GH7CZ3NhDmWhV6MNrjncB,FYbKdFNGDrUQs08N7TisMA
+
+:url-sinatra-activerecord: https://github.com/sinatra-activerecord/sinatra-activerecord
+:url-exifdata: https://github.com/tonytonyjan/exif
+:url-aws-sdk-ruby: https://github.com/aws/aws-sdk-ruby
+:url-mapbox-sdk: https://github.com/mapbox/mapbox-sdk-rb
+:url-stripe: https://github.com/stripe/stripe-ruby
+
+:url-trello: https://trello.com/invite/b/Js1UqM3L/ATTI4bdd78d080eb479a99c58b9ee1c909cd9CB7EED8/ticket-board
+
+== Wireframes
+
+The sections contoured in red are for MVP stage.
+(Customize wireframes {url-wireframes}[here])
+
+image::wireframe.png[wire frame examples]
+
+== Architecture Design/Diagrams
+
+=== Diagrams
+
+==== _OVERVIEW_
+(Customize the overview diagram {url-overview-diagram}[here])
+
+image::overview_diagram.png[wire frame examples]
+
+                                                      ┌────────────────────┐
+                                                      │                    │
+                                                      │       ROUTES       │◄──────────────  HTTP Response
+                                                      │                    │                  (HTML)
+                                                      └─────────┬──────────┘
+                                                                │
+                                                          Forward request to
+     ┌────────────┐                                     appropriate controller
+     │            │                                             │
+     │            │                                   ┌─────────▼───────────┐
+     │            │       ┌─────────────┐             │                     │
+     ├────────────┤◄──────┤             ├────────────►│                     │
+     │  DATABASE  │       │             │             │    ┌───────────┐    │               HTTP Response
+     ├────────────┼──────►│    MODELS   │◄────────────┤    │CONTROLLERS│    ├─────────────►  (HTML)
+     │            │       │             │ read/write  │    └───────────┘    │
+     │            │       │             │    data     │                     │
+     │            │       └─────────────┘             │                     │
+     │            │                                   └───────────▲─────────┘
+     └────────────┘                                               │
+                                                                  │
+                                                                  │
+                                                         ┌────────┴─────────┐
+                                                         │                  │
+                                                         │      VIEWS       │
+                                                         │    (templates)   │
+                                                         │                  │
+                                                         └──────────────────┘
+
+==== _MVC_ 
+
+image::MVC_diagram.png[extraction_of_image_data]
+
+==== Detailed diagram of image data extraction
+
+image::image_extraction_with_metadata.png[extraction_of_image_data]
+
+== Technologies
+
+- Framework:
+
+-- Sinatra
+
+-- React(Potentially) for the front end though later on.
+
+- Cloud:
+
+{url-aws-sdk-ruby}[AWS SS3]
+
+- Model dependencies:
+
+{url-stripe}[Stripe API]
+
+{url-mapbox-sdk}[mapbox-sdk API] 
+
+{url-exifdata}[Exif Data gem tool]
+
+- ORM: 
+
+{url-sinatra-activerecord}[Sinatra ActiveRecord]
+
+- Testing:
+
+-- RSpec (unit testing)
+
+-- Capybara (end to end testing)
+
+-- Jmeter (for load testing/performance testing)
+
+== Kanban
+
+The kanban board of ongoing tickets can be found {url-trello}[here].
+
+== Ideation
+
+=== Moderation of content
+
+The platform should not rely on any standard KYC processes, that can be
+intrusive, and infiringe on privacy of users; nevertheless the issue of
+moderating content so as not to host or display morally unsavoury/illegal
+content needs to be considered carefully.
+
+"Morally unsavoury content" for now refers to any images which are:
+
+-- pornographic in nature AND contain images of children.
+
+-- containing scenes of extreme violence (e.g. beheadings, non-historical murder scenes etc.)
+
+-- documents that immediately identify any persons who does not hold a position of political authority
+
+The terms are currently vague, though will need to be discussed in greater detail.
+
+In order to not burden one person with the onus of moderating what does and does not constitue a moral transgression according to the rules of the site,
+but also to not give one person the power to determine what can and cannot be seen the responsibility should be a collective one. 
+
+==== Sponsorhip link
+
+Therefore, as a temporary solution, users will need to be invited by other users onto the site.
+If one person posts anything that transgresses the rules, then two people are banned, the person committing the offence, along with their sponsor.
+
+==== Jury service
+
+If the site begins to host many users, then when content is flagged, members of the collective will be called on to immediately serve in a sort of randomised jury service.
+If 100 members are on the site, then 10 users will be shown the image and asked to 'Yay' or 'Nay'.
+50% vote either way is required to take action from thereon.
+If a draw, another is made of randomised users.
+
+The users should not be subscribers to the person whose content is under review, as this would naturally instill a bias.
+
+If it is 'Nay', a grace period of 20 days is given for the user to appeal to another jury call, before the users profile is deleted.
+
+During the appeal period, and from the moment of flagging, the image in question is obfuscated, but not deleted from the database.
+
+
+This system will need to be thought through in greater detail.
+
+If the rules are defined well enough, then rather than asking 'Yay' or 'Nay', then it may be easier to ask the jury member:
+"Does the following image infringe on the premise of the following rule: Must not depict an image of a child in a sexual context?"
+OR
+"Does the following image infringe on the premise of the following rule: Must not promote the exclusion or violence towards a person on the basis of their physical appearance?"
+
+If the person that flags the image as infringment reports more than 3 images, that all are deemed 'Yay' by a wider group of deliberators, the reporter is deleted instead.
+
+A qualifying jury member is only someone who is a contributor to the platform. (i.e. hosts a group, hosts images or content online for others to see).
+A contributor is someone who has participated in activity, either in sending messages to other users (be they private or public).
+
+=== Communication channel
+
+The wed application should promote free movement and communication of users whether they are on this platform or others.
+Therefore, the chat should be federated, so that users can send messages to their friends and colleagues on other platforms.
+
+[insert details on the federated stuff here from convo with KOTP]
+
+== To pay or not to pay
+
+Dependent on the desired outcome, it might be an idea to consider users paying a monthly subscription fee in order to have their images hosted.
+The reasonining is simple, hosting images online securely is not free
+- as an example there isn't anywhere I can think of where you can go and dump a bag of your belongings and expect them to remain unscathed, unborrowed, unused if you leave them overnight.
+Ultimately the same will apply to the internet.
