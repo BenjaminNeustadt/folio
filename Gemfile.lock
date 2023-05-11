@@ -5,6 +5,9 @@ GEM
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    nio4r (2.5.9)
+    puma (6.2.2)
+      nio4r (~> 2.0)
     rack (2.2.7)
     rack-protection (3.0.6)
       rack
@@ -39,6 +42,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  puma
   rspec (~> 3.12)
   sinatra (~> 3.0)
   sinatra-contrib (~> 3.0)

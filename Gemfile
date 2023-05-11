@@ -11,3 +11,5 @@ gem "sinatra-contrib", "~> 3.0"
 group :development, :test do
   gem "rspec", "~> 3.12"
 end
+
+gem "puma", "~> 6.2"
