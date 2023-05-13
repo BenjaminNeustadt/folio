@@ -16,3 +16,9 @@ gem "puma", "~> 6.2"
 gem "webrick", "~> 1.8"
 
 gem "rack-test", "~> 2.1"
+
+gem "sinatra-activerecord", "~> 2.0"
+
+gem "sqlite3", "~> 1.6"
+
+gem "rake", "~> 13.0"
