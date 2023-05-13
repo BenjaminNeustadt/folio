@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 ruby '3.0.0'
-# gem "rails"
 
 gem "sinatra", "~> 3.0"
 gem "sinatra-contrib", "~> 3.0"
@@ -13,3 +12,7 @@ group :development, :test do
 end
 
 gem "puma", "~> 6.2"
+
+gem "webrick", "~> 1.8"
+
+gem "rack-test", "~> 2.1"
