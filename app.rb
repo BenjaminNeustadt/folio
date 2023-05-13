@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'sinatra/activerecord'
 
 class Application < Sinatra::Base
 
@@ -9,7 +10,7 @@ class Application < Sinatra::Base
   end
 
   get '/' do
-    'FOLIO'
+    erb(:index)
   end
 
 end
