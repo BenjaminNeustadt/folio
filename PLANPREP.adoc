@@ -304,3 +304,7 @@ A submit button that wont let you click it unless the content is inserted
 https://github.com/Jaay06/fun-form-validation.git
 
 == Back-end sandbox ideas
+
+=== Organising code base
+
+Consider Sinatra partials gem
