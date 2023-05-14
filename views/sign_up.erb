@@ -1,0 +1,16 @@
+<div class="form">
+<a>Welcome...</a>
+  <form action="/users/sign_up" method="post">
+    <input class="input-box" type="username" name="username" placeholder="user-Name"/>
+    <input class="input-box" type="email" name="email" placeholder="email">
+    <input class="input-box" type="password" name="password" placeholder="password">
+    <input class="submit-button" type="submit" value="Sign Up">
+  </form>
+  <div>
+  <br>
+  <i>These are the current users in the database:</i>
+  <br>
+  <br>
+  <%= @users %>
+  </div>
+</div>
