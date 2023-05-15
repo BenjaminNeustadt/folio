@@ -304,7 +304,30 @@ A submit button that wont let you click it unless the content is inserted
 https://github.com/Jaay06/fun-form-validation.git
 
 == Back-end sandbox ideas
+https://github.com/maxjustus/sinatra-authentication
+https://github.com/jeremyevans/rodauth
+
+=== exif reader
+
+the fastest one:
+https://github.com/tonytonyjan/exif
+
+mini exif:
+https://github.com/janfri/mini_exiftool
+
+Exif Reader:
+https://remvee.github.io/exifr/
+
+https://github.com/remvee/exifr
+
+https://exiftool.org/
+
+=== stripe
+https://github.com/stripe/stripe-ruby
+
+=== database
+https://hevodata.com/learn/sqlite-vs-postgresql/#speed
 
 === Organising code base
 
-Consider Sinatra partials gem
+Consider Sinatra partials gem: https://github.com/yb66/Sinatra-Partial
