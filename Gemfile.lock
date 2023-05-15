@@ -14,6 +14,7 @@ GEM
     bcrypt (3.1.18)
     concurrent-ruby (1.2.2)
     diff-lcs (1.5.0)
+    exif (2.2.4)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     minitest (5.18.0)
@@ -57,6 +58,8 @@ GEM
       rack-protection (= 3.0.6)
       sinatra (= 3.0.6)
       tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
     sqlite3 (1.6.2-arm64-darwin)
     tilt (2.1.0)
     tzinfo (2.0.6)
@@ -68,6 +71,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt (~> 3.1)
+  exif (~> 2.2)
   puma (~> 6.2)
   rack-test (~> 2.1)
   rake (~> 13.0)
@@ -75,6 +79,7 @@ DEPENDENCIES
   sinatra (~> 3.0)
   sinatra-activerecord (~> 2.0)
   sinatra-contrib (~> 3.0)
+  sinatra-flash (~> 0.3.0)
   sqlite3 (~> 1.6)
   webrick (~> 1.8)
 

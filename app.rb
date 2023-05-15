@@ -1,16 +1,13 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'sinatra/flash'
+
 require 'sinatra/activerecord'
 require_relative 'app/models/user'
 require_relative 'app/models/image'
 require 'bcrypt'
 
 class User < ActiveRecord::Base
-
-  # def create(new_user)
-  #   encrypted_password = BCrypt::Password.create(new_user.password)
-  #   (email: new_user.email , password: encrypted_password, username: new_user.username, user_id: new_user.user_id)
-  # end
 
 end
 
@@ -21,11 +18,8 @@ class Application < Sinatra::Base
     register Sinatra::Reloader
   end
 
-    # new_user = {email: params[:email], password: params[:password], username: params[:username]}
-    # encrypted_password = BCrypt::Password.create(new_user.password)
-    # # User.create(email: 'example@email.com', password: encrypted_password, username: 'Example', user_id: 12 )
-    # User.create(email: new_user.email, password: encrypted_password, username: new_user.username , user_id: 12 )
-    # @all_users = User.all.to_json
+  enable :sessions
+  register Sinatra::Flash
 
   get '/' do
     @users = User.all.to_json
@@ -37,6 +31,27 @@ class Application < Sinatra::Base
     redirect '/'
   end
 
-  # Routes for user signup
+  post '/users/sign_in' do
+    user = User.find_by(email: params[:email])
+
+    if user && user.password == params[:password]
+      session[:user_id] = user.id
+      flash[:notice] = "Welcome to folio #{user.username}!"
+      redirect '/account_page'
+    else
+      flash[:notice] = "Incorrect email or password"
+      redirect '/'
+    end
+  end
+
+  # This is the special account page
+  get '/account_page' do
+    if session[:user_id].nil?
+      return redirect('/')
+    else
+      @users = User.all.to_json
+      return erb(:account_page)
+    end
+  end
 
 end
