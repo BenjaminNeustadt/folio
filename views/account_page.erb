@@ -27,7 +27,7 @@
   <% else %>
     <% @images.each do |image| %>
 
-      <div class="imagio" align="center">
+      <div align="center">
         <img src="<%= image.url %>" width="400" height="500">
         <p><%= image.caption %></p>
         <form action="/images/<%= image.id %>" method="post">

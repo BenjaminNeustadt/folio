@@ -103,4 +103,9 @@ class Application < Sinatra::Base
     Image.create(url: url, user_id: user_id, caption: caption)
   end
 
+  post '/images/:id' do
+    Image.find(params[:id]).destroy
+    redirect '/account_page'
+  end
+
 end
