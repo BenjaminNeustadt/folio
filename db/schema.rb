@@ -10,11 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_15_094311) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_15_135929) do
+  create_table "images", force: :cascade do |t|
+    t.string "url", null: false
+    t.integer "user_id", null: false
+    t.string "caption"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
     t.string "password", null: false
   end
 
+  add_foreign_key "images", "users"
 end

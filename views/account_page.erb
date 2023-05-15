@@ -4,8 +4,39 @@
   <div>
     <h3>Account Page</h3>
     <br>
-    <i>These are the current users in the database:</i>
+    <i><b>These are the current users in the database:</b></i>
+    <br>
     <br>
     <%= @users %>
   </div>
+</div>
+<br>
+<br>
+
+<form action='/upload' method='post' enctype='multipart/form-data'>
+  ADD NEW PHOTO: <input type='file' name='file'>
+  CAPTION: <input type='text' name='caption'>
+  <input class="button" type='submit'>
+</form>
+
+<div class="image-items">
+  <p><b> Here are the images:</b></p>
+
+  <% if @images.empty? %>
+    <p> There are currently no images</p>
+  <% else %>
+    <% @images.each do |image| %>
+
+      <div class="imagio" align="center">
+        <img src="<%= image.url %>" width="400" height="500">
+        <p><%= image.caption %></p>
+        <form action="/images/<%= image.id %>" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <input class="button" type="submit" value="Delete">
+        </form>
+      </div>
+
+    <% end %>
+  <% end %>
+  <%= @images.to_json%>
 </div>

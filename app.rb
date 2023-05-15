@@ -1,3 +1,5 @@
+require 'dotenv/load'
+
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/flash'
@@ -6,6 +8,9 @@ require 'sinatra/activerecord'
 require_relative 'app/models/user'
 require_relative 'app/models/image'
 require 'bcrypt'
+
+require 'aws-sdk-s3'
+
 
 class User < ActiveRecord::Base
 
@@ -25,11 +30,22 @@ class User < ActiveRecord::Base
 
 end
 
-class Application < Sinatra::Base
+class Image < ActiveRecord::Base
+  belongs_to :user
+  # include CloudHelpers
+end
 
+class Application < Sinatra::Base
   # Allow code to refresh without having to restart server
   configure :development do
     register Sinatra::Reloader
+    Aws.config.update({
+    region: 'eu-north-1',
+    credentials: Aws::Credentials.new(ENV['S3_ACCESS_KEY'], ENV['S3_SECRET_KEY'])
+    })
+
+    set :s3, Aws::S3::Resource.new
+    set :bucket, settings.s3.bucket('folio-test-bucket')
   end
 
   enable :sessions
@@ -63,9 +79,28 @@ class Application < Sinatra::Base
     if session[:user_id].nil?
       return redirect('/')
     else
+      @images = Image.all
+      @bucket = settings.s3.bucket('folio-test-bucket')
+      @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
       @users = User.all.to_json
       return erb(:account_page)
     end
+  end
+
+  # IMAGE UPLOAD
+  post '/upload' do
+    # Get the user_id from the session
+    user_id = session[:user_id]
+    # Get the file name and caption
+    file_name = params[:file][:filename]
+    caption = params[:caption]
+
+    # Upload file to AWS S3
+    obj = settings.bucket.object(file_name)
+    url = obj.public_url.to_s
+
+    # create the image associated with the user
+    Image.create(url: url, user_id: user_id, caption: caption)
   end
 
 end
