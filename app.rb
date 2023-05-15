@@ -9,7 +9,9 @@ require_relative 'app/models/user'
 require_relative 'app/models/image'
 require 'bcrypt'
 
+require 'exif'
 require 'aws-sdk-s3'
+require 'net/http'
 
 
 class User < ActiveRecord::Base
@@ -99,8 +101,14 @@ class Application < Sinatra::Base
     obj = settings.bucket.object(file_name)
     url = obj.public_url.to_s
 
+    uri = URI.parse(url)
+    file_content = Net::HTTP.get(uri)
+
+    data = Exif::Data.new(file_content)
+    date_time = data.date_time
+
     # create the image associated with the user
-    Image.create(url: url, user_id: user_id, caption: caption)
+    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time)
   end
 
   post '/images/:id' do
