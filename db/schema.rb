@@ -10,11 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_15_135929) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_15_143949) do
   create_table "images", force: :cascade do |t|
     t.string "url", null: false
     t.integer "user_id", null: false
     t.string "caption"
+    t.string "date_time"
+    t.float "f_number"
+    t.float "focal_length_in_35mm_film"
+    t.float "gps_altitude"
+    t.float "gps_latitude"
+    t.float "gps_longitude"
   end
 
   create_table "users", force: :cascade do |t|
