@@ -9,6 +9,20 @@ require 'bcrypt'
 
 class User < ActiveRecord::Base
 
+  before_save :encrypt_password
+
+  private
+
+  def encrypt_password
+    self.password = BCrypt::Password.create(password)
+  end
+
+  public
+
+  def authenticate(password)
+    BCrypt::Password.new(self.password) == password
+  end
+
 end
 
 class Application < Sinatra::Base
@@ -34,7 +48,7 @@ class Application < Sinatra::Base
   post '/users/sign_in' do
     user = User.find_by(email: params[:email])
 
-    if user && user.password == params[:password]
+    if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       flash[:notice] = "Welcome to folio #{user.username}!"
       redirect '/account_page'
