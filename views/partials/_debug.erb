@@ -1,0 +1,25 @@
+<% if @user %>
+  <div>
+    <p>
+      <br>
+    <details>
+  
+      <summary><i>These are the current users in the database:</i></summary>
+      <br>
+      <%= @users %>
+    </details>
+  </div>
+<% end %>
+
+
+<% if @images %>
+  <div>
+    </p>
+    <p>
+    <details>
+      <summary>Images</summary>
+      <%= @images.to_json%>
+    </details>
+    </p>
+  </div>
+<% end %>

@@ -8,10 +8,14 @@
   <body>
 
     <header>
-      FOLIO: site in build...
     </header>
-     <%= partial :"partials/navbar" %>
-    <%=yield%>
+
+      <%= partial :"partials/navbar" %>
+      <%= yield %>
+
+    <footer>
+      <%= partial :"partials/debug" %>
+    </footer>
 
   </body>
 

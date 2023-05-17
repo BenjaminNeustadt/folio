@@ -61,6 +61,7 @@ class Application < Sinatra::Base
 
   get '/' do
     @current_page = '/'
+    @user  = session[:user_id]
     @users = User.all.to_json
     erb(:sign_up)
   end
@@ -89,6 +90,7 @@ class Application < Sinatra::Base
     if session[:user_id].nil?
       return redirect('/')
     else
+      @user  = session[:user_id]
       @images = Image.all
       @bucket = settings.s3.bucket('folio-test-bucket')
       @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
