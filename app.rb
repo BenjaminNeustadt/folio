@@ -98,40 +98,14 @@ class Application < Sinatra::Base
     data = Exif::Data.new(File.open(file))
     date_time = data.date_time
     gps_longitude = data.gps_longitude
-    puts "============================================"
-    puts "The File looks like this:"
-    puts "============================================"
-    p file
-    puts "============================================"
     # Get the file name and caption
     file_name = params[:file][:filename]
-    puts "============================================"
-    puts "The Image upload comes through like this:"
-    puts "============================================"
-    p file_name
-    puts "============================================"
     caption = params[:caption]
 
     # Upload file to AWS S3
     object = settings.bucket.object(file_name)
     object.upload_file(file)
     url = object.public_url.to_s
-
-    #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
-    #========================================================================================= 
-    # It says this:
-    # undefined method `to_f' for [(77/1), (10/1), (6/5)]:Array
-    #========================================================================================= 
-    #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    # uri = URI.parse(url)
-    # file_content = Net::HTTP.get(uri)
-
-    # Is working...for images already inside the aws bucket, not new images
-    # data = Exif::Data.new(file_content)
-    # date_time = data.date_time
-    # gps_longitude = data.gps_longitude
-    # gps_longitude = data.gps_longitude
 
     # create the image associated with the user
     Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time, gps_longitude: gps_longitude )
