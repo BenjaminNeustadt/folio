@@ -17,3 +17,16 @@ Benjamin Neustadt
 
 
 Refer to 'PLANPREP' for the planning elements of project.
+
+== Development/Configuration
+
+To connect the constituent parts of the application.
+
+Add with your API keys for the `.evn` file.
+
+----
+# .env
+S3_ACCESS_KEY=''
+S3_SECRET_KEY=''
+MAPBOX_ACCESS_TOKEN=''
+----
