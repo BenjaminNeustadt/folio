@@ -135,6 +135,7 @@ class Application < Sinatra::Base
 
   get '/logout' do
     session.clear
+    flash[:notice] = "Until the next..."
     redirect '/'
   end
 
