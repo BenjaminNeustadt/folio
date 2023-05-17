@@ -133,4 +133,9 @@ class Application < Sinatra::Base
     erb(:map_page)
   end
 
+  get '/logout' do
+    session.clear
+    redirect '/'
+  end
+
 end
