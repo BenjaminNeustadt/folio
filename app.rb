@@ -12,6 +12,7 @@ require 'bcrypt'
 require 'exif'
 require 'aws-sdk-s3'
 require 'net/http'
+require 'mapkick'
 
 
 class User < ActiveRecord::Base
