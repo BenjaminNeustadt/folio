@@ -303,6 +303,9 @@ I need to be able to hone my search for images that I am searching for
 A submit button that wont let you click it unless the content is inserted
 https://github.com/Jaay06/fun-form-validation.git
 
+Using bootstrap for the navbar styling: https://getbootstrap.com/docs/4.0/components/navs/#tabs
+Same as above: https://getbootstrap.com/docs/4.0/components/navs/#javascript-behavior <<< used this one
+
 == Back-end sandbox ideas
 https://github.com/maxjustus/sinatra-authentication
 https://github.com/jeremyevans/rodauth

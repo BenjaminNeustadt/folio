@@ -60,6 +60,7 @@ class Application < Sinatra::Base
 
 
   get '/' do
+    @current_page = '/'
     @users = User.all.to_json
     erb(:sign_up)
   end
@@ -84,6 +85,7 @@ class Application < Sinatra::Base
 
   # This is the special account page
   get '/account_page' do
+    @current_page = '/account_page'
     if session[:user_id].nil?
       return redirect('/')
     else
@@ -125,6 +127,7 @@ class Application < Sinatra::Base
   end
 
   get '/map_page' do
+    @current_page = '/map_page'
     erb(:map_page)
   end
 
