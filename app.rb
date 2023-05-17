@@ -107,7 +107,7 @@ class Application < Sinatra::Base
     file = params[:file][:tempfile]
     data = Exif::Data.new(File.open(file))
     date_time = data.date_time
-    gps_longitude = data.gps_longitude
+    # gps_longitude = data.gps_longitude
     # Get the file name and caption
     file_name = params[:file][:filename]
     caption = params[:caption]
@@ -118,7 +118,7 @@ class Application < Sinatra::Base
     url = object.public_url.to_s
 
     # create the image associated with the user
-    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time, gps_longitude: gps_longitude )
+    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time )
     redirect '/account_page'
   end
 
