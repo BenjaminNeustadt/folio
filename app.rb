@@ -138,4 +138,8 @@ class Application < Sinatra::Base
     redirect '/'
   end
 
+  get '/shop_page' do
+    erb(:shop_page)
+  end
+
 end
