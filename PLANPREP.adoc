@@ -312,7 +312,7 @@ Why use puma over webrick? https://stackoverflow.com/a/49674630
 === exif reader
 
 the fastest one:
-https://github.com/tonytonyjan/exif
+https://github.com/tonytonyjan/exif <<< #used this one
 
 mini exif:
 https://github.com/janfri/mini_exiftool
@@ -326,6 +326,9 @@ https://exiftool.org/
 
 https://github.com/minimagick/minimagick
 
+=== map
+
+https://github.com/ankane/mapkick
 === stripe
 https://github.com/stripe/stripe-ruby
 

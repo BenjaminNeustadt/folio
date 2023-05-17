@@ -33,3 +33,5 @@ gem "aws-sdk-s3", "~> 1.122"
 gem "dotenv", "~> 2.8"
 
 gem "nokogiri", "~> 1.14"
+
+gem "mapkick-rb", "~> 0.1.4"
