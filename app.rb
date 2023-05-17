@@ -97,6 +97,7 @@ class Application < Sinatra::Base
     file = params[:file][:tempfile]
     data = Exif::Data.new(File.open(file))
     date_time = data.date_time
+    gps_longitude = data.gps_longitude
     puts "============================================"
     puts "The File looks like this:"
     puts "============================================"
@@ -116,6 +117,13 @@ class Application < Sinatra::Base
     object.upload_file(file)
     url = object.public_url.to_s
 
+    #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
+    #========================================================================================= 
+    # It says this:
+    # undefined method `to_f' for [(77/1), (10/1), (6/5)]:Array
+    #========================================================================================= 
+    #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
     # uri = URI.parse(url)
     # file_content = Net::HTTP.get(uri)
 
@@ -126,7 +134,7 @@ class Application < Sinatra::Base
     # gps_longitude = data.gps_longitude
 
     # create the image associated with the user
-    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time)
+    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time, gps_longitude: gps_longitude )
     redirect '/account_page'
   end
 

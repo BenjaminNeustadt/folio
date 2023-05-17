@@ -30,6 +30,7 @@
       <div align="center">
         <img src="<%= image.url %>" width="400" height="500">
         <p><%= image.caption %></p>
+        <p><%= image.date_time %></p>
         <form action="/images/<%= image.id %>" method="post">
           <input type="hidden" name="_method" value="delete">
           <input class="button" type="submit" value="Delete">
