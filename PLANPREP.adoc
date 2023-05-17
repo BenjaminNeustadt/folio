@@ -307,6 +307,8 @@ https://github.com/Jaay06/fun-form-validation.git
 https://github.com/maxjustus/sinatra-authentication
 https://github.com/jeremyevans/rodauth
 
+Why use puma over webrick? https://stackoverflow.com/a/49674630
+
 === exif reader
 
 the fastest one:
@@ -321,6 +323,8 @@ https://remvee.github.io/exifr/
 https://github.com/remvee/exifr
 
 https://exiftool.org/
+
+https://github.com/minimagick/minimagick
 
 === stripe
 https://github.com/stripe/stripe-ruby
