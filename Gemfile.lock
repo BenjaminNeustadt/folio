@@ -82,6 +82,8 @@ GEM
       tilt (~> 2.0)
     sinatra-flash (0.3.0)
       sinatra (>= 1.0.0)
+    sinatra-partial (1.0.1)
+      sinatra (>= 1.4)
     sqlite3 (1.6.2-arm64-darwin)
     tilt (2.1.0)
     tzinfo (2.0.6)
@@ -106,6 +108,7 @@ DEPENDENCIES
   sinatra-activerecord (~> 2.0)
   sinatra-contrib (~> 3.0)
   sinatra-flash (~> 0.3.0)
+  sinatra-partial (~> 1.0)
   sqlite3 (~> 1.6)
   webrick (~> 1.8)
 

@@ -3,6 +3,7 @@ require 'dotenv/load'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/flash'
+require 'sinatra/partial'
 
 require 'sinatra/activerecord'
 require_relative 'app/models/user'
@@ -39,6 +40,10 @@ class Image < ActiveRecord::Base
 end
 
 class Application < Sinatra::Base
+  enable :sessions
+  register Sinatra::Flash
+  register Sinatra::Partial
+
   # Allow code to refresh without having to restart server
   configure :development do
     register Sinatra::Reloader
@@ -46,13 +51,13 @@ class Application < Sinatra::Base
     region: 'eu-north-1',
     credentials: Aws::Credentials.new(ENV['S3_ACCESS_KEY'], ENV['S3_SECRET_KEY'])
     })
-
     set :s3, Aws::S3::Resource.new
     set :bucket, settings.s3.bucket('folio-test-bucket')
   end
 
-  enable :sessions
-  register Sinatra::Flash
+  enable :partial_underscores
+  set :partial_template_engine, :erb
+
 
   get '/' do
     @users = User.all.to_json

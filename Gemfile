@@ -35,3 +35,5 @@ gem "dotenv", "~> 2.8"
 gem "nokogiri", "~> 1.14"
 
 gem "mapkick-rb", "~> 0.1.4"
+
+gem "sinatra-partial", "~> 1.0"
