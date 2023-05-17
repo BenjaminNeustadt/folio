@@ -112,9 +112,14 @@ class Application < Sinatra::Base
     redirect '/account_page'
   end
 
+  # deleting an image
   post '/images/:id' do
     Image.find(params[:id]).destroy
     redirect '/account_page'
+  end
+
+  get '/map_page' do
+    erb(:map_page)
   end
 
 end
