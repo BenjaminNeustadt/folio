@@ -5,7 +5,6 @@ Benjamin Neustadt
 :experimental:
 :header_footer: true
 :icons: font
-:listing-caption: Listing
 :sectnums:
 :source-language: ruby
 :sourcedir: assets
@@ -22,10 +21,11 @@ Refer to 'PLANPREP' for the planning elements of project.
 
 To connect the constituent parts of the application.
 
-Add with your API keys for the `.evn` file.
+Add with your API keys for the `.env` file.
 
+.`.env`
+[source, ini]
 ----
-# .env
 S3_ACCESS_KEY=''
 S3_SECRET_KEY=''
 MAPBOX_ACCESS_TOKEN=''
