@@ -34,8 +34,12 @@
         <p><%= image.caption %></p>
         <p><%= image.date_time %></p>
         <form action="/images/<%= image.id %>" method="post">
-          <input type="hidden" name="_method" value="delete">
-          <input class="button" type="submit" value="Delete">
+
+          <% if image.user_id == @user %>
+            <input type="hidden" name="_method" value="delete">
+            <input class="button" type="submit" value="Delete">
+          <% end %>
+
         </form>
       </div>
 
