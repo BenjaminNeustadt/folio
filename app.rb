@@ -91,15 +91,15 @@ class Application < Sinatra::Base
   # This is the special account page
   get '/account_page' do
     @current_page = '/account_page'
-    if session[:user_id].nil?
-      return redirect('/')
-    else
+    if session[:user_id]
       @user  = session[:user_id]
       @images = Image.all
-      @bucket = settings.s3.bucket('folio-test-bucket')
-      @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
+      bucket = settings.s3.bucket('folio-test-bucket')
+      bucket_objects = bucket.objects.to_a rescue []  # return empty array if bucket does not exist or is empty
       @users = User.all.to_json
-      return erb(:account_page)
+      erb(:account_page)
+    else
+      redirect('/')
     end
   end
 
