@@ -332,6 +332,9 @@ https://github.com/minimagick/minimagick
 === map
 
 https://github.com/ankane/mapkick
+
+Tutorial:
+https://www.youtube.com/watch?v=FEj0cJqgcRs
 === stripe
 https://github.com/stripe/stripe-ruby
 
