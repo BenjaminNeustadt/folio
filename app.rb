@@ -44,9 +44,10 @@ class Application < Sinatra::Base
   register Sinatra::Flash
   register Sinatra::Partial
 
-  # Allow code to refresh without having to restart server
-  configure :development do
+  configure :development, :test do
+    # Allow code to refresh without having to restart server
     register Sinatra::Reloader
+    # AWS credentials
     Aws.config.update({
     region: 'eu-north-1',
     credentials: Aws::Credentials.new(ENV['S3_ACCESS_KEY'], ENV['S3_SECRET_KEY'])
