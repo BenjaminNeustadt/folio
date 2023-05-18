@@ -71,21 +71,74 @@ class Application < Sinatra::Base
     redirect '/'
   end
 
-  post '/users/sign_in' do
+  def successful_login
+    [
+      '/account_page',
+      "Welcome to folio, %<name>s!" % {name: user.username}
+    ]
+  end
+
+  def unsuccessful_login
+    [
+      '/',
+      "Incorrect email or password"
+    ]
+  end
+
+  # An idea for extracting some of the route related business logic
+  module RouteHelpers
+
+    # We could use a method, inside a module
+    def sign_in
+      '/users/sign_in'
+    end
+
+  end
+
+  # We include the module
+  include RouteHelpers
+
+  post sign_in do
     user = User.find_by(email: params[:email])
+
 
     target, notice = if user && user.authenticate(params[:password])
                        session[:user_id] = user.id
-                       [
-                         '/account_page',
-                         "Welcome to folio, %<name>s!" % {name: user.username}
-                       ]
+                       # We can now use the method to return their respective blocks
+                       successful_login
                      else
-                       ['/', "Incorrect email or password"]
+                       unsuccessful_login
                      end
 
     flash[:notice] = notice
     redirect target
+  end
+  # ^ Anothe way of doing something similar to this is like below:
+
+  # Another idea for extracting the flash notices to a constant when we begin
+  # to get many of them
+  MESSAGES =
+    {
+      notices:
+      {
+      login:
+        {
+          success: "Welcome %<name>s",
+          failure: "Incorrect"
+        },
+      logout:
+        {
+          success: "Bye %<name>s.",
+          failure: "Incorrect logout"
+        }
+      }
+    }
+
+      # Could do this to set it
+      @logout = MESSAGES[:notices]
+  get log_out do
+    session.clear
+    flash[:notice] = MESSAGES[:notices][:log_out][:success] % {name: @user.username}
   end
 
   # This is the special account page
