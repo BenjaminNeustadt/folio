@@ -18,7 +18,7 @@ describe Application do
     it 'creates a new account for a user' do
       response = post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
       expect(response.status).to eq(302) # 302 is status redirect
-      expect(User.last.email).to eq('test@example.com') # check that the user was created
+      expect(User.last.email).to eq('test@example.com') # user was created
     end
   end
 
@@ -29,6 +29,31 @@ describe Application do
       expect(response).to be_redirect
       follow_redirect!
       expect(last_response.body).to include("Account Page")
+    end
+  end
+
+  context 'a session only begins after sign in and ends at sign out' do
+    it 'does not initially exist' do
+      get '/'
+      expect(session[:user_id]).to be_nil
+    end
+
+    it 'exists after log_in' do
+      post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      post '/users/sign_in', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      # :TODO: install data_clean so that this fails
+      expect(session[:user_id]).to eq(4)
+      expect(session[:user_id]).to be_integer
+    end
+
+    it 'does not exist after log_out' do
+      post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      post '/users/sign_in', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      # :TODO: install data_clean so that this fails
+      expect(session[:user_id]).to be_integer
+      get '/logout'
+      expect(session[:flash][:notice]).to eq "Until the next..."
+      expect(session[:user_id]).to be_nil
     end
   end
 
