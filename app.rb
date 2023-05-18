@@ -74,14 +74,18 @@ class Application < Sinatra::Base
   post '/users/sign_in' do
     user = User.find_by(email: params[:email])
 
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      flash[:notice] = "Welcome to folio #{user.username}!"
-      redirect '/account_page'
-    else
-      flash[:notice] = "Incorrect email or password"
-      redirect '/'
-    end
+    target, notice = if user && user.authenticate(params[:password])
+                       session[:user_id] = user.id
+                       [
+                         '/account_page',
+                         "Welcome to folio, %<name>s!" % {name: user.username}
+                       ]
+                     else
+                       ['/', "Incorrect email or password"]
+                     end
+
+    flash[:notice] = notice
+    redirect target
   end
 
   # This is the special account page
