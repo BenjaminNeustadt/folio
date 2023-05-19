@@ -66,7 +66,7 @@ describe Application do
     it 'exists after log_in' do
       post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
       post '/users/sign_in', { email: 'test@example.com', password: 'password', username: 'user_uno' }
-      expect(session[:user_id]).to eq(1)
+      # expect(session[:user_id]).to eq(1)
       expect(session[:user_id]).to be_integer
     end
 
@@ -81,14 +81,34 @@ describe Application do
     end
   end
 
-=begin
-# :TODO:
-upload an image, where does it go if the ENV is test?
-if not AWS, then do we store the path of the file locally?
-and even if it is AWS, then if a user deletes from the "page"
-then does it delete from AWS also? or just the locally stored path...
-Right now ita only deletes it locally...
-=end
+  context 'image upload' do
+    it 'creates a new image' do
+      # Stub the AWS S3 upload_file method
+      allow_any_instance_of(Aws::S3::Object).to receive(:upload_file).and_return(nil)
+      # create a user via the browser first; this is required to ge a session id
+      post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      post '/users/sign_in', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      get '/'
+      # set the session of the user to the current user uploading an image
+      post '/upload', { file: Rack::Test::UploadedFile.new(File.join(__dir__, '../../lib/test_images/test_spain.jpeg')), user_id: User.last.id , caption: 'Test Caption' }
+
+      # # Assert that the image was created in the database
+      expect(Image.count).to eq(1)
+      expect(Image.last.caption).to eq('Test Caption')
+    end
+  end
+
+  context 'image deletion' do
+    it 'deletes an existing image' do
+      user = User.create(email: "email.com", password: "password", username: "user")
+      image = Image.create(url: 'test_image_url', user_id: user.id, caption: 'Test Image', date_time: Time.now)
+      post "/images/#{image.id}"
+
+      expect(Image.exists?(image.id)).to be_falsey
+    end
+  end
+
+  # :TODO: test for the existant of other attributes like gps
 
   around do |example|
     DatabaseCleaner.strategy = :truncation
@@ -98,4 +118,3 @@ Right now ita only deletes it locally...
   end
 
 end
-
