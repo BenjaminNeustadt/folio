@@ -57,6 +57,39 @@ describe Application do
     end
   end
 
+  context '' do
+    it 'does not initially exist' do
+      get '/'
+      expect(session[:user_id]).to be_nil
+    end
+
+    it 'exists after log_in' do
+      post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      post '/users/sign_in', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      expect(session[:user_id]).to eq(1)
+      expect(session[:user_id]).to be_integer
+    end
+
+    it 'does not exist after log_out' do
+      post '/users/sign_up', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      post '/users/sign_in', { email: 'test@example.com', password: 'password', username: 'user_uno' }
+      # :TODO: install data_clean so that this fails
+      expect(session[:user_id]).to be_integer
+      get '/logout'
+      expect(session[:flash][:notice]).to eq "Until the next..."
+      expect(session[:user_id]).to be_nil
+    end
+  end
+
+=begin
+# :TODO:
+upload an image, where does it go if the ENV is test?
+if not AWS, then do we store the path of the file locally?
+and even if it is AWS, then if a user deletes from the "page"
+then does it delete from AWS also? or just the locally stored path...
+Right now ita only deletes it locally...
+=end
+
   around do |example|
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.cleaning do
@@ -65,3 +98,4 @@ describe Application do
   end
 
 end
+
