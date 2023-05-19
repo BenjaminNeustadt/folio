@@ -3,5 +3,15 @@
 </form>
 
 <div>
-    <%= js_map [{latitude: 48.884165 , longitude: 2.371737, label: 'Home', tooltip: 'On the canal'}] %>
+    <%= js_map [{latitude: 48.884165 ,
+                longitude: 2.371737,
+                label: 'Home', tooltip: 'On the canal'}],
+                id: "cities-map",
+                width: "800px",
+                height: "500px",
+                tooltips: {hover: false, html: true},
+                markers: {color: "#0f0f0f"},
+                style: "mapbox://styles/mapbox/outdoors-v12",
+                zoom: 11.5
+                %>
 </div>
