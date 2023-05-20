@@ -100,6 +100,15 @@ class Application < Sinatra::Base
     end
   end
 
+  def convert_gps_coordinates(coordinate)
+    degrees = coordinate[0].numerator.to_f / coordinate[0].denominator
+    minutes = coordinate[1].numerator.to_f / coordinate[1].denominator / 60
+    seconds = coordinate[2].numerator.to_f / coordinate[2].denominator / 3600
+    
+    decimal_coordinate = degrees + minutes + seconds
+    decimal_coordinate
+  end
+
   # IMAGE UPLOAD
   post '/upload' do
     # Get the user_id from the session
@@ -108,7 +117,8 @@ class Application < Sinatra::Base
     file = params[:file][:tempfile]
     data = Exif::Data.new(File.open(file))
     date_time = data.date_time
-    # gps_longitude = data.gps_longitude
+    gps_longitude = convert_gps_coordinates(data.gps_longitude)
+    gps_latitude = convert_gps_coordinates(data.gps_latitude)
     # Get the file name and caption
     file_name = params[:file][:filename]
     caption = params[:caption]
@@ -119,7 +129,7 @@ class Application < Sinatra::Base
     url = object.public_url.to_s
 
     # create the image associated with the user
-    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time )
+    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time, gps_latitude: gps_latitude, gps_longitude: gps_longitude)
     redirect '/account_page'
   end
 
@@ -130,6 +140,7 @@ class Application < Sinatra::Base
   end
 
   get '/map_page' do
+    @test_image = Image.all.first
     @current_page = '/map_page'
     erb(:map_page)
   end
