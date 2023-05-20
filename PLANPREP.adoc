@@ -345,3 +345,13 @@ https://hevodata.com/learn/sqlite-vs-postgresql/#speed
 === Organising code base
 
 Consider Sinatra partials gem: https://github.com/yb66/Sinatra-Partial
+
+=== Extra ideas
+
+Integrate the V&A collection:
+
+Users can browse throught the collection and add items to their favourites...encouraging engagement with the museums collection in an interative way...
+
+The users favourites collection gets added to a map, according to the location it was produced, emphasising the diversity of the museums collection
+
+Users can search for items according to their interests...
