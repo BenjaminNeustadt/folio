@@ -16,12 +16,6 @@ require 'net/http'
 require 'mapkick'
 
 
-
-class Image < ActiveRecord::Base
-  belongs_to :user
-  # include CloudHelpers
-end
-
 class Application < Sinatra::Base
   enable :sessions
   register Sinatra::Flash
