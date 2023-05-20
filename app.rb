@@ -129,7 +129,14 @@ class Application < Sinatra::Base
     url = object.public_url.to_s
 
     # create the image associated with the user
-    Image.create(url: url, user_id: user_id, caption: caption, date_time: date_time, gps_latitude: gps_latitude, gps_longitude: gps_longitude)
+    Image.create(
+      url: url,
+      user_id: user_id,
+      caption: caption,
+      date_time: date_time,
+      gps_latitude: gps_latitude,
+      gps_longitude: gps_longitude)
+
     redirect '/account_page'
   end
 
@@ -140,7 +147,7 @@ class Application < Sinatra::Base
   end
 
   get '/map_page' do
-    @test_image = Image.all.first
+    @test_image = Image.all.last
     @current_page = '/map_page'
     erb(:map_page)
   end
