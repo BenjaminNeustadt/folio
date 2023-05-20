@@ -147,6 +147,24 @@ class Application < Sinatra::Base
     redirect '/account_page'
   end
 
+  get '/images_data.json' do
+    content_type :json
+
+    images_data = []
+
+    images = Image.all
+    images.each do |image|
+    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
+  end
+
   get '/map_page' do
     @test_image = Image.all.last
     @current_page = '/map_page'

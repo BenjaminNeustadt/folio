@@ -7,7 +7,9 @@
     image = @test_image
     image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
     data = [{latitude: image.gps_latitude , longitude: image.gps_longitude , label: 'Home', tooltip: image_link }]
-    js_map data,
+
+    data_url = '/images_data.json'
+    js_map data_url,
            id: "cities-map",
            width: "800px",
            height: "500px",
