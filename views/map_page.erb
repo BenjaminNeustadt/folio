@@ -4,8 +4,9 @@
 
 <div>
     <%=
-    link = '<a href="https://collections.vam.ac.uk/search/?q=edward%20muybridge&page=1&page_size=15" target= "blank">click here</a>'
-    data = [{latitude: 48.884165 , longitude: 2.371737, label: 'Home', tooltip: link }]
+    image = @test_image.url
+    image_link = "<img src='" + image + "' style='max-width: 200px; max-height: 200px;'>"
+    data = [{latitude: 48.884165 , longitude: 2.371737, label: 'Home', tooltip: image_link }]
     js_map data,
            id: "cities-map",
            width: "800px",
@@ -16,3 +17,5 @@
            zoom: 11.5
     %>
 </div>
+
+<%# link = '<a href="https://collections.vam.ac.uk/search/?q=edward%20muybridge&page=1&page_size=15" target= "blank">click here</a>' %>
