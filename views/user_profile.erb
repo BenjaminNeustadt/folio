@@ -1,0 +1,10 @@
+<h1>User Profile - <%= @user.username %></h1>
+
+<% if @images.any? %>
+  <h2>Uploaded Images</h2>
+  <% @images.each do |image| %>
+    <img src="<%= image.url %>"  width="400" height="500" alt="<%= image.caption %>">
+  <% end %>
+<% else %>
+  <p>No images uploaded by this user.</p>
+<% end %>

@@ -17,6 +17,7 @@ require 'mapkick'
 
 
 class User < ActiveRecord::Base
+  has_many :images, dependent: :destroy
 
   before_save :encrypt_password
 
@@ -63,7 +64,8 @@ class Application < Sinatra::Base
   get '/' do
     @current_page = '/'
     @user  = session[:user_id]
-    @users = User.all.to_json
+    # @users = User.all.to_json
+    @users = User.all
     erb(:sign_up)
   end
 
@@ -85,6 +87,20 @@ class Application < Sinatra::Base
     end
   end
 
+  # search for an indepenedent user's feed/page
+  get '/users/:username' do
+    @current_page = '/users/:username'
+    @user = User.find_by(username: params[:username])
+
+    if @user
+      @images = @user.images
+      erb(:user_profile)
+    else
+      flash[:notice] = 'User not found'
+      redirect '/account_page'
+    end
+  end
+
   # This is the special account page
   get '/account_page' do
     @current_page = '/account_page'
@@ -92,10 +108,12 @@ class Application < Sinatra::Base
       return redirect('/')
     else
       @user  = session[:user_id]
+      @current_user = User.find(session[:user_id])
       @images = Image.all
       @bucket = settings.s3.bucket('folio-test-bucket')
       @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
-      @users = User.all.to_json
+      # @users = User.all.to_json
+      @users = User.all
       return erb(:account_page)
     end
   end
