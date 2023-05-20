@@ -3,7 +3,8 @@
   <%= flash[:notice] %>
   <div>
     <h3> Sign-Up </h3>
-    <form action="/users/sign_up" method="post">
+    <form action="/users/sign_up" method="post" enctype='multipart/form-data'>
+    AVATAR: <input type='file' name='avatar'>
       <input class="input-box" type="username" name="username" placeholder="user-Name" />
       <input class="input-box" type="email" name="email" placeholder="email">
       <input class="input-box" type="password" name="password" placeholder="password">

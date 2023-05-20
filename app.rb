@@ -17,7 +17,6 @@ require 'mapkick'
 
 
 class User < ActiveRecord::Base
-
   before_save :encrypt_password
 
   private
@@ -44,6 +43,8 @@ class Application < Sinatra::Base
   register Sinatra::Flash
   register Sinatra::Partial
 
+  set :public_folder, 'public'
+
   configure :development, :test do
     # Allow code to refresh without having to restart server
     register Sinatra::Reloader
@@ -68,7 +69,23 @@ class Application < Sinatra::Base
   end
 
   post '/users/sign_up' do
-    User.create(email: params[:email], password:params[:password] , username: params[:username])
+
+    file = params[:avatar][:tempfile]
+    file_name = params[:avatar][:filename]
+    file_path = "/uploads/#{file_name}"
+
+    File.open("public#{file_path}", 'wb') do |f|
+      f.write(file.read)
+    end
+
+    user_params = {
+      avatar: file_path,
+      email: params[:email],
+      password: params[:password],
+      username: params[:username]
+    }
+
+    User.create(user_params)
     redirect '/'
   end
 
@@ -91,7 +108,11 @@ class Application < Sinatra::Base
     if session[:user_id].nil?
       return redirect('/')
     else
-      @user  = session[:user_id]
+      # @user  = session[:user_id]
+      @user_values = User.find(session[:user_id])
+      p "=========================================="
+      p @user_values.avatar
+      p "=========================================="
       @images = Image.all
       @bucket = settings.s3.bucket('folio-test-bucket')
       @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty

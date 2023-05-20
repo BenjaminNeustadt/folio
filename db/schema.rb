@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_15_143949) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_20_145436) do
   create_table "images", force: :cascade do |t|
     t.string "url", null: false
     t.integer "user_id", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_15_143949) do
     t.string "username", null: false
     t.string "email", null: false
     t.string "password", null: false
+    t.string "avatar"
   end
 
   add_foreign_key "images", "users"

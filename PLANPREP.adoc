@@ -306,6 +306,9 @@ https://github.com/Jaay06/fun-form-validation.git
 Using bootstrap for the navbar styling: https://getbootstrap.com/docs/4.0/components/navs/#tabs
 Same as above: https://getbootstrap.com/docs/4.0/components/navs/#javascript-behavior <<< used this one
 
+Having an avatar for the user:
+https://www.pngegg.com/en/search?q=space+Invaders
+
 == Back-end sandbox ideas
 https://github.com/maxjustus/sinatra-authentication
 https://github.com/jeremyevans/rodauth
