@@ -140,6 +140,7 @@ class Application < Sinatra::Base
     redirect '/account_page'
   end
 
+  # :TODO: use 'delete' instead of 'post'
   # deleting an image
   post '/images/:id' do
     Image.find(params[:id]).destroy
