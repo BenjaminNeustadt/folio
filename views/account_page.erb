@@ -24,12 +24,11 @@
 
 <br>
 
-<form action='/upload' method='post' enctype='multipart/form-data'>
+<%# <form action='/upload' method='post' enctype='multipart/form-data'>
   ADD NEW PHOTO: <input type='file' name='file'>
   CAPTION: <input type='text' name='caption'>
   <input class="button" type='submit'>
-</form>
-
+</form> %>
 
 <div class="image-items">
   <p><b>Here are the images:</b></p>
@@ -37,14 +36,19 @@
   <div class="image-grid">
 
     <div class="image-item add-photo">
+
       <form action='/upload' method='post' enctype='multipart/form-data'>
+
         <label for="file-upload" class="add-photo-label">
           <div class="add-photo-icon">+</div>
           <div class="add-photo-text">Add Image</div>
-        </label>
-        <input id="file-upload" type='file' name='file'>
+          CAPTION: <input type='text' name='caption'>
+        <input type='file' name='file' id="file-upload" >
         <input class="button" type='submit' value="Add New Photo">
+        </label>
+
       </form>
+
     </div>
 
     <% if @images.empty? %>
