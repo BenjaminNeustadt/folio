@@ -1,4 +1,3 @@
-require 'dotenv/load'
 
 require 'sinatra/base'
 require 'sinatra/reloader'
@@ -11,42 +10,46 @@ require_relative 'app/models/image'
 require 'bcrypt'
 
 require 'exif'
-require 'aws-sdk-s3'
 require 'net/http'
 require 'mapkick'
 
-
 class Application < Sinatra::Base
+  instance_eval(File.read('config/config.rb'))
+
+  # the order of these is important
   enable :sessions
   register Sinatra::Flash
   register Sinatra::Partial
 
-  configure :development, :test do
-    # Allow code to refresh without having to restart server
-    register Sinatra::Reloader
-    # AWS credentials
-    Aws.config.update({
-    region: 'eu-north-1',
-    credentials: Aws::Credentials.new(ENV['S3_ACCESS_KEY'], ENV['S3_SECRET_KEY'])
-    })
-    set :s3, Aws::S3::Resource.new
-    set :bucket, settings.s3.bucket('folio-test-bucket')
-  end
-
   enable :partial_underscores
   set :partial_template_engine, :erb
 
+  # :TODO: maybe just put these inside their respetive models,
+  # since these are interacting with the database so that's where they should be.
+  before do
+    @current_user = User.find(session[:user_id]) if session[:user_id]
+    @current_page = request.path_info
+    @images = Image.all
+    @users = User.all
+    @bucket = settings.s3.bucket('folio-test-bucket')
+    @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
+  end
 
   get '/' do
-    @current_page = '/'
-    @user  = session[:user_id]
+    # @current_page = '/'
+    # @user  = session[:user_id]
     # @users = User.all.to_json
-    @users = User.all
+    # @users = User.all
     erb(:sign_up)
   end
 
+  # :TODO: put the User.create inside the model also
   post '/users/sign_up' do
-    User.create(email: params[:email], password:params[:password] , username: params[:username])
+    User.create(
+      email: params[:email],
+      password: params[:password], 
+      username: params[:username]
+    )
     redirect '/'
   end
 
@@ -65,7 +68,7 @@ class Application < Sinatra::Base
 
   # search for an indepenedent user's feed/page
   get '/users/:username' do
-    @current_page = '/users/:username'
+    # @current_page = '/users/:username'
     @user = User.find_by(username: params[:username])
 
     if @user
@@ -79,21 +82,22 @@ class Application < Sinatra::Base
 
   # This is the special account page
   get '/account_page' do
-    @current_page = '/account_page'
+    # @current_page = '/account_page'
     if session[:user_id].nil?
       return redirect('/')
     else
       @user  = session[:user_id]
-      @current_user = User.find(session[:user_id])
-      @images = Image.all
-      @bucket = settings.s3.bucket('folio-test-bucket')
-      @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
+      # @current_user = User.find(session[:user_id])
+      # @images = Image.all
+      # @bucket = settings.s3.bucket('folio-test-bucket')
+      # @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
       # @users = User.all.to_json
-      @users = User.all
+      # @users = User.all
       return erb(:account_page)
     end
   end
 
+  # :TODO: put this in ExifHelpers module
   def convert_gps_coordinates(coordinate)
     degrees = coordinate[0].numerator.to_f / coordinate[0].denominator
     minutes = coordinate[1].numerator.to_f / coordinate[1].denominator / 60
@@ -122,15 +126,16 @@ class Application < Sinatra::Base
     object.upload_file(file)
     url = object.public_url.to_s
 
-    # create the image associated with the user
-    Image.create(
+    image_params = {
       url: url,
       user_id: user_id,
       caption: caption,
       date_time: date_time,
       gps_latitude: gps_latitude,
-      gps_longitude: gps_longitude)
-
+      gps_longitude: gps_longitude
+    }
+    # create the image associated with the user
+    Image.create(image_params)
     redirect '/account_page'
   end
 
@@ -161,7 +166,7 @@ class Application < Sinatra::Base
 
   get '/map_page' do
     @test_image = Image.all.last
-    @current_page = '/map_page'
+    # @current_page = '/map_page'
     erb(:map_page)
   end
 
