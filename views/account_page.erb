@@ -9,9 +9,11 @@
 <p>Logged-in User:<a style="color:red" > <%= @current_user.username %></a></p>
 <!-- Existing content -->
 
-<% @users.each do |user| %>
-  <p><a href="/users/<%= user.username %>"><%= user.username %></a></p>
-<% end %>
+<p><b>Recent Users:</b>
+  <% @users.each do |user| %>
+    <p><a href="/users/<%= user.username %>"><%= user.username %></a></p>
+  <% end %>
+</p>
 
 <br>
 <br>
