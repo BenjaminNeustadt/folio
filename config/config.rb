@@ -1,4 +1,3 @@
-require 'dotenv/load'
 require 'aws-sdk-s3'
 
 configure :development, :test do
