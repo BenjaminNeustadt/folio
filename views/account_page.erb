@@ -24,12 +24,6 @@
 
 <br>
 
-<%# <form action='/upload' method='post' enctype='multipart/form-data'>
-  ADD NEW PHOTO: <input type='file' name='file'>
-  CAPTION: <input type='text' name='caption'>
-  <input class="button" type='submit'>
-</form> %>
-
 <div class="image-items">
   <p><b>Here are the images:</b></p>
 
@@ -70,53 +64,3 @@
     <% end %>
   </div>
 </div>
-
-
-
-<style>
-.image-item.add-photo {
-  text-align: center;
-  background-color: #f1f1f1;
-  border: 2px dashed #ccc;
-  width: 400px; /* Adjust the width to match the other images */
-  height: 500px; 
-}
-
-.add-photo-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-.add-photo-icon {
-  font-size: 60px;
-  line-height: 1;
-  color: #aaa;
-}
-
-.add-photo-text {
-  margin-top: 10px;
-}
-
-.add-photo input[type="file"] {
-  display: none;
-}
-
-.add-photo .button {
-  margin-top: 10px;
-}
-
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 54px;
-}
-
-.image-item {
-  text-align: center;
-}
-</style>
