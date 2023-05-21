@@ -3,18 +3,7 @@
 </form>
 
 <div align="center">
-    <%=
-
-    data_url = '/images_data.json'
-    js_map data_url,
-           id: "cities-map",
-           width: "800px",
-           height: "500px",
-           tooltips: {hover: false, html: true},
-           markers: {color: "#0f0f0f"},
-           style: "mapbox://styles/mapbox/outdoors-v12",
-           zoom: 1
-    %>
+    <%= partial :"partials/map_with_images" %>
 </div>
 
 <%# link = '<a href="https://collections.vam.ac.uk/search/?q=edward%20muybridge&page=1&page_size=15" target= "blank">click here</a>' %>

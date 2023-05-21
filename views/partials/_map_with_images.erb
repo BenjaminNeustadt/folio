@@ -1,0 +1,12 @@
+<%=
+
+data_url = '/images_data.json'
+js_map data_url,
+       id: "cities-map",
+       width: "800px",
+       height: "500px",
+       tooltips: {hover: false, html: true},
+       markers: {color: "#0f0f0f"},
+       style: "mapbox://styles/mapbox/outdoors-v12",
+       zoom: 1
+%>
