@@ -9,6 +9,7 @@ gem "sinatra-contrib", "~> 3.0"
 gem "sinatra-flash",   "~> 0.3.0"
 
 group :development, :test do
+  gem "aws-sdk-s3",           "~> 1.122"
   gem "bcrypt",               "~> 3.1"
   gem "dotenv",               "~> 2.8"
   gem "exif",                 "~> 2.2"
@@ -23,4 +24,3 @@ group :development, :test do
   gem "sqlite3",              "~> 1.6"
   gem "webrick",              "~> 1.8"
 end
-
