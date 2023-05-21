@@ -6,14 +6,10 @@
     <br>
   </div>
 </div>
-<p>Logged-in User:<a style="color:red" > <%= @current_user.username %></a></p>
-<!-- Existing content -->
 
-<p><b>Recent Users:</b>
-  <% @users.each do |user| %>
-    <p><a href="/users/<%= user.username %>"><%= user.username %></a></p>
-  <% end %>
-</p>
+<%= partial :"partials/display_current_user" %>
+
+<%= partial :"partials/display_recent_users_links" %>
 
 <br>
 <br>
