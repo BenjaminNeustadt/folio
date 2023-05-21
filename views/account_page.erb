@@ -30,29 +30,39 @@
   <input class="button" type='submit'>
 </form>
 
+
 <div class="image-items">
-  <p><b> Here are the images:</b></p>
+  <p><b>Here are the images:</b></p>
 
   <% if @images.empty? %>
-    <p> There are currently no images</p>
+    <p>There are currently no images</p>
   <% else %>
-    <% @images.each do |image| %>
-
-      <div align="center">
-        <img src="<%= image.url %>" width="400" height="500">
-        <p><%= image.caption %></p>
-        <p><%= image.date_time %></p>
-        <form action="/images/<%= image.id %>" method="post">
-
-          <% if image.user_id == @user %>
-            <input type="hidden" name="_method" value="delete">
-            <input class="button" type="submit" value="Delete">
-          <% end %>
-
-        </form>
-      </div>
-
-    <% end %>
+    <div class="image-grid">
+      <% @images.each do |image| %>
+        <div class="image-item">
+          <img src="<%= image.url %>" width="400" height="500">
+          <p><%= image.caption %></p>
+          <p><%= image.date_time %></p>
+          <form action="/images/<%= image.id %>" method="post">
+            <% if image.user_id == @user %>
+              <input type="hidden" name="_method" value="delete">
+              <input class="button" type="submit" value="Delete">
+            <% end %>
+          </form>
+        </div>
+      <% end %>
+    </div>
   <% end %>
-
 </div>
+
+<style>
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.image-item {
+  text-align: center;
+}
+</style>
