@@ -81,7 +81,6 @@ module ImageController
   end
 
   def display_map_page
-    @test_image = Image.all.last
     erb(:map_page)
   end
 
