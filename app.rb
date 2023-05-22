@@ -14,6 +14,9 @@ require 'exif'
 require 'net/http'
 require 'mapkick'
 
+# :TODO: move these controllers to /controllers folder
+# :TODO: make the modules classes instead
+
 module UserController
 
   def current_user
