@@ -7,9 +7,10 @@
   </div>
 </div>
 
-<%= partial :"partials/display_current_user" %>
+<% if @current_user %>
 
-<%= partial :"partials/display_recent_users_links" %>
+  <%= partial :"partials/display_current_user" %>
+  <%= partial :"partials/display_recent_users_links" %>
 
 <br>
 <br>
@@ -19,4 +20,11 @@
 </form>
 <br>
 
-<%= partial :"partials/display_all_images" %>
+  <%= partial :"partials/display_all_images" %>
+
+<% else %>
+
+  <%= partial :"partials/log_in_form" %>
+  <%= partial :"partials/signup_form" %>
+
+<% end %>

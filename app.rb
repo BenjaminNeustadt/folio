@@ -175,7 +175,7 @@ class Application < Sinatra::Base
   end
 
   get '/' do
-    erb(:sign_up)
+    erb(:account_page)
   end
 
   post('/users/sign_up') { sign_up_user } 
