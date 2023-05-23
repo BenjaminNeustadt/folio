@@ -346,6 +346,8 @@ https://hevodata.com/learn/sqlite-vs-postgresql/#speed
 
 Consider Sinatra partials gem: https://github.com/yb66/Sinatra-Partial
 
+https://github.com/rubyconfig/config
+
 === Extra ideas
 
 Integrate the V&A collection:
