@@ -84,27 +84,14 @@ module ImageController
     Image.all
   end
 
+  #(?) not certain if this is in the correct scope
+  def current_user_images
+    current_user.images rescue []
+  end
+
   def display_map_page
     erb(:map_page)
   end
-
-  # def image_data_to_json
-  #   content_type :json
-
-  #   images_data = []
-
-  #   images = Image.all
-  #   images.each do |image|
-  #   image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-  #     images_data << {
-  #       latitude: image.gps_latitude,
-  #       longitude: image.gps_longitude,
-  #       label: image.caption,
-  #       tooltip: image_link
-  #     }
-  #   end
-  #   images_data.to_json
-  # end
 
   def delete_image
     Image.find(params[:id]).destroy
@@ -142,6 +129,24 @@ module ImageController
     redirect '/account_page'
   end
 
+  def image_data_to_json(images = Image.all)
+    content_type :json
+
+    images_data = []
+
+    images.each do |image|
+    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
+  end
+
+
   # :TODO: put this in ExifHelpers module
   def convert_gps_coordinates(coordinate)
     degrees = coordinate[0].numerator.to_f / coordinate[0].denominator
@@ -172,6 +177,7 @@ class Application < Sinatra::Base
     @current_user = current_user
     @current_page = request.path_info
     @images = all_images
+    @user_images = current_user_images
     @users = all_users
     @bucket = settings.s3.bucket('folio-test-bucket')
     @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
@@ -190,27 +196,12 @@ class Application < Sinatra::Base
 
   get('/account_page') { user_has_session? }
 
+  get('/current_user_profile') { erb(:current_user_profile) }
+
   post('/upload') { upload_image }
 
   # :TODO: use 'delete' instead of 'post'
   post('/images/:id') { delete_image }
-
-  def image_data_to_json(images = Image.all)
-    content_type :json
-
-    images_data = []
-
-    images.each do |image|
-    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
-  end
 
   get('/images_data.json') { image_data_to_json(@current_user.images) }
 

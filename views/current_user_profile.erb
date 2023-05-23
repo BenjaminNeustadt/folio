@@ -1,0 +1,20 @@
+<div>
+  <a>Your page...</a>
+  <%= flash[:notice] %>
+  <div>
+    <h3> <% @current_user.username %></h3>
+    <br>
+  </div>
+</div>
+
+  <%= partial :"partials/display_current_user" %>
+  <%= partial :"partials/display_recent_users_links" %>
+
+<br>
+
+<form action='/map_page' method='get'>
+    <input type="submit" value="Go to map page" />
+</form>
+<br>
+
+<%= partial :"partials/display_current_user_images" %>

@@ -1,0 +1,42 @@
+<div class="image-items">
+  <p><b>Here are your images:</b></p>
+
+  <div class="image-grid">
+
+    <%# Form for adding new image %>
+    <div class="image-item add-photo">
+
+      <form action='/upload' method='post' enctype='multipart/form-data'>
+
+        <label for="file-upload" class="add-photo-label">
+          <div class="add-photo-icon">+</div>
+          <div class="add-photo-text">Add Image</div>
+          CAPTION: <input type='text' name='caption'>
+        <input type='file' name='file' id="file-upload" >
+        <input class="button" type='submit' value="Add New Photo">
+        </label>
+
+      </form>
+
+    </div>
+
+    <% if @user_images.empty? %>
+      <p>You currently have no images</p>
+    <% else %>
+      <% @user_images.each do |image| %>
+        <div class="image-item">
+          <img src="<%= image.url %>" width="400" height="500">
+          <p><%= image.caption %></p>
+          <p><%= image.date_time %></p>
+          <form action="/images/<%= image.id %>" method="post">
+            <% if image.user_id == @user %>
+              <input type="hidden" name="_method" value="delete">
+              <input class="button" type="submit" value="Delete">
+            <% end %>
+          </form>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
