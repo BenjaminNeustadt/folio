@@ -88,23 +88,23 @@ module ImageController
     erb(:map_page)
   end
 
-  def image_data_to_json
-    content_type :json
+  # def image_data_to_json
+  #   content_type :json
 
-    images_data = []
+  #   images_data = []
 
-    images = Image.all
-    images.each do |image|
-    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
-  end
+  #   images = Image.all
+  #   images.each do |image|
+  #   image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+  #     images_data << {
+  #       latitude: image.gps_latitude,
+  #       longitude: image.gps_longitude,
+  #       label: image.caption,
+  #       tooltip: image_link
+  #     }
+  #   end
+  #   images_data.to_json
+  # end
 
   def delete_image
     Image.find(params[:id]).destroy
@@ -188,19 +188,36 @@ class Application < Sinatra::Base
 
   get('/users/:username') { search_user }
 
-  get('/account_page') {user_has_session?}
+  get('/account_page') { user_has_session? }
 
   post('/upload') { upload_image }
 
   # :TODO: use 'delete' instead of 'post'
-  post('/images/:id') {delete_image}
+  post('/images/:id') { delete_image }
 
-  get('/images_data.json') {image_data_to_json}
+  def image_data_to_json(images = Image.all)
+    content_type :json
 
-  get('/map_page') {display_map_page}
+    images_data = []
 
-  get('/logout') {logout_current_user}
+    images.each do |image|
+    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
+  end
 
-  get('/shop_page') {erb(:shop_page)}
+  get('/images_data.json') { image_data_to_json(@current_user.images) }
+
+  get('/map_page') { display_map_page }
+
+  get('/logout') { logout_current_user }
+
+  get('/shop_page') { erb(:shop_page) }
 
 end
