@@ -337,10 +337,16 @@ Tutorial:
 https://www.youtube.com/watch?v=FEj0cJqgcRs
 
 === stripe
+
 https://github.com/stripe/stripe-ruby
 
 === database
+
 https://hevodata.com/learn/sqlite-vs-postgresql/#speed
+
+Deleting from the s3 bucket:
+
+https://stackoverflow.com/questions/27421972/unable-to-delete-file-from-amazon-s3-using-ruby-script
 
 === Organising code base
 
