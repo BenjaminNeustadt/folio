@@ -7,6 +7,40 @@
   </div>
 </div>
 
+<form>
+  <input type="text" id="search_input" name="search_query" placeholder="Search by username">
+</form>
+
+<div id="search_results"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var input = $('#search_input');
+    var results = $('#search_results');
+
+    input.on('input', function() {
+      var query = input.val();
+
+      if (query.length >= 2) {
+        $.ajax({
+          url: '/users/search',
+          type: 'POST',
+          data: { search_query: query },
+          success: function(response) {
+            results.html(response);
+          },
+          error: function() {
+            results.html('<p>Error occurred while searching.</p>');
+          }
+        });
+      } else {
+        results.empty();
+      }
+    });
+  });
+</script>
+
 <% if @current_user %>
 
   <%= partial :"partials/display_current_user" %>

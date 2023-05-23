@@ -55,17 +55,6 @@ module UserController
     redirect '/'
   end
 
-  def search_user
-    @user = User.find_by(username: params[:username])
-
-    if @user
-      @images = @user.images
-      erb(:user_profile)
-    else
-      flash[:notice] = 'User not found'
-      redirect '/account_page'
-    end
-  end
 
   def user_has_session?
     if session[:user_id].nil?
@@ -191,6 +180,26 @@ class Application < Sinatra::Base
 
   # search for an indepenedent user's feed/page
   post('/users/sign_in') { sign_in_user }
+
+  def search_user
+    @user = User.find_by(username: params[:username])
+
+    if @user
+      @images = @user.images
+      erb(:user_profile)
+    else
+      flash[:notice] = 'User not found'
+      redirect '/account_page'
+    end
+  end
+
+  def search_bar
+    search_query = params[:search_query]
+    @matched_users = User.where("username LIKE ?", "%#{search_query}%")
+    erb(:search_results, layout: false)
+  end
+
+  post('/users/search') { search_bar }
 
   get('/users/:username') { search_user }
 
