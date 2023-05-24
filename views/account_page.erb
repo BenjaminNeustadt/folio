@@ -41,13 +41,10 @@
   });
 </script>
 
-<% if @current_user %>
 
   <%= partial :"partials/display_current_user" %>
   <%= partial :"partials/display_recent_users_links" %>
 
-<br>
-<br>
 
 <form action='/map_page' method='get'>
     <input type="submit" value="Go to map page" />
@@ -55,10 +52,3 @@
 <br>
 
   <%= partial :"partials/display_all_images" %>
-
-<% else %>
-
-  <%= partial :"partials/log_in_form" %>
-  <%= partial :"partials/signup_form" %>
-
-<% end %>

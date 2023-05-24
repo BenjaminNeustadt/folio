@@ -32,6 +32,26 @@ describe Application do
       expect(last_response.body).to include("Account Page")
     end
   end
+  
+  describe 'visiting /' do
+    context 'when Im signed out' do
+      it 'I am redirected to the sign-in page' do
+        response = get '/'
+        expect(response).to be_redirect
+      end
+    end
+    
+    context 'when Im signed in' do
+      before do
+        user = User.create({username: "Jon", email: "email@email.com", password: "1234"})
+        env "rack.session", {:user_id=> user.id}
+      end
+      it 'I can see my account page' do
+        response = get '/'
+        expect(response.body).to include "Account Page"
+      end
+    end
+  end
 
   context 'a session only begins after sign in and ends at sign out' do
     it 'does not initially exist' do

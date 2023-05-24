@@ -35,7 +35,7 @@ module UserController
       erb(:user_profile)
     else
       flash[:notice] = 'User not found'
-      redirect '/account_page'
+      redirect '/'
     end
   end
 
@@ -60,7 +60,7 @@ module UserController
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       flash[:notice] = "Welcome to folio #{user.username}!"
-      redirect '/account_page'
+      redirect '/'
     else
       flash[:notice] = "Incorrect email or password"
       redirect '/'
@@ -74,14 +74,6 @@ module UserController
   end
 
 
-  def user_has_session?
-    if session[:user_id].nil?
-      return redirect('/')
-    else
-      @user  = session[:user_id]
-      return erb(:account_page)
-    end
-  end
 
 end
 
@@ -102,7 +94,7 @@ module ImageController
 
   def delete_image
     Image.find(params[:id]).destroy
-    redirect '/account_page'
+    redirect '/'
   end
 
   def upload_image
@@ -133,7 +125,7 @@ module ImageController
     }
     # create the image associated with the user
     Image.create(image_params)
-    redirect '/account_page'
+    redirect '/'
   end
 
   def image_data_to_json(images = Image.all)
@@ -191,7 +183,16 @@ class Application < Sinatra::Base
   end
 
   get '/' do
-    erb(:account_page)
+    if session[:user_id].nil?
+      return redirect('/login')
+    else
+      @user  = session[:user_id]
+      return erb(:account_page)
+    end
+  end
+
+  get '/login' do
+      erb(:login_page)
   end
 
   post('/users/sign_up') { sign_up_user } 
@@ -204,7 +205,6 @@ class Application < Sinatra::Base
 
   get('/users/:username') { search_user }
 
-  get('/account_page') { user_has_session? }
 
   get('/current_user_profile') { erb(:current_user_profile) }
 
