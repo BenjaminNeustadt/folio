@@ -27,24 +27,6 @@ module UserController
     @users = User.all
   end
 
-  def search_user
-    @user = User.find_by(username: params[:username])
-
-    if @user
-      @images = @user.images
-      erb(:user_profile)
-    else
-      flash[:notice] = 'User not found'
-      redirect '/account_page'
-    end
-  end
-
-  def search_bar
-    search_query = params[:search_query]
-    @matched_users = User.where("username LIKE ?", "%#{search_query}%")
-    erb(:search_results, layout: false)
-  end
-
   def sign_up_user
     User.create(
       email: params[:email],
@@ -136,23 +118,6 @@ module ImageController
     redirect '/account_page'
   end
 
-  def image_data_to_json(images = Image.all)
-    content_type :json
-
-    images_data = []
-
-    images.each do |image|
-    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
-  end
-
 
   # :TODO: put this in ExifHelpers module
   def convert_gps_coordinates(coordinate)
@@ -194,31 +159,96 @@ class Application < Sinatra::Base
     erb(:account_page)
   end
 
-  post('/users/sign_up') { sign_up_user } 
+  # def search_user
+  # end
 
-  # search for an indepenedent user's feed/page
-  post('/users/sign_in') { sign_in_user }
+  get('/users/:username') {
+    # search_user
+    @user = User.find_by(username: params[:username])
+
+    # if @user
+      @images = @user.images
+      erb(:user_profile)
+    # else
+      # flash[:notice] = 'User not found'
+      # redirect '/account_page'
+    # end
+  }
+
+  def image_data_to_json(images = Image.all)
+  end
+    # image_data_to_json(@current_user.images)
+  get('/images_data.json') {
+    content_type :json
+
+    images_data = []
+
+    images.each do |image|
+    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
+  }
+
+  get '/users/:username/images_data' do
+    @user = User.find_by(username: params[:username])
+    if @user
+    p "==========================================================?"
+    p @user.username
+    p "==========================================================?"
+      image_data_to_json(@user.images)
+    else
+      halt 404, 'User not found'
+    end
+  end
 
 
-  post('/users/search') { search_bar }
+  get('/account_page') {
+    user_has_session?
+  }
 
-  get('/users/:username') { search_user }
+  get('/current_user_profile') {
+    erb(:current_user_profile)
+  }
 
-  get('/account_page') { user_has_session? }
-
-  get('/current_user_profile') { erb(:current_user_profile) }
-
-  post('/upload') { upload_image }
+  post('/upload') {
+    upload_image
+  }
 
   # :TODO: use 'delete' instead of 'post'
-  post('/images/:id') { delete_image }
+  post('/images/:id') {
+    delete_image
+  }
 
-  get('/images_data.json') { image_data_to_json(@current_user.images) }
 
-  get('/map_page') { display_map_page }
+  get('/map_page') {
+    display_map_page
+  }
 
-  get('/logout') { logout_current_user }
+  get('/logout') {
+    logout_current_user
+  }
 
-  get('/shop_page') { erb(:shop_page) }
+  get('/shop_page') {
+    erb(:shop_page)
+  }
+
+  post('/users/sign_up') {
+    sign_up_user
+  } 
+
+  # search for an indepenedent user's feed/page
+  post('/users/sign_in') {
+    sign_in_user
+  }
+
+  post('/users/search') {
+    search_bar
+  }
 
 end

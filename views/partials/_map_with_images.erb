@@ -1,6 +1,12 @@
-<%=
+<% if @current_page == '/account_page' %>
+  <% data_url = '/images_data.json' %>
+<% elsif  @user%>
+  <% data_url = "/users/#{@user.username}/images_data" %>
+<% else %>
+  <% data_url = '/images_data.json' %>
+<% end %>
 
-data_url = '/images_data.json'
+<%=
 js_map data_url,
        id: "cities-map",
        width: "800px",
