@@ -27,18 +27,6 @@ module UserController
     @users = User.all
   end
 
-  def search_user
-    @user = User.find_by(username: params[:username])
-
-    if @user
-      @images = @user.images
-      erb(:user_profile)
-    else
-      flash[:notice] = 'User not found'
-      redirect '/'
-    end
-  end
-
   def search_bar
     search_query = params[:search_query]
     @matched_users = User.where("username LIKE ?", "%#{search_query}%")
@@ -72,8 +60,6 @@ module UserController
     flash[:notice] = "Until the next..."
     redirect '/'
   end
-
-
 
 end
 
@@ -128,24 +114,6 @@ module ImageController
     redirect '/'
   end
 
-  def image_data_to_json(images = Image.all)
-    content_type :json
-
-    images_data = []
-
-    images.each do |image|
-    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
-  end
-
-
   # :TODO: put this in ExifHelpers module
   def convert_gps_coordinates(coordinate)
     degrees = coordinate[0].numerator.to_f / coordinate[0].denominator
@@ -183,11 +151,11 @@ class Application < Sinatra::Base
   end
 
   get '/' do
-    if session[:user_id].nil?
-      return redirect('/login')
+    if session[:user_id]
+      @user = session[:user_id]
+      erb(:account_page)
     else
-      @user  = session[:user_id]
-      return erb(:account_page)
+      redirect('/login')
     end
   end
 
@@ -203,8 +171,43 @@ class Application < Sinatra::Base
 
   post('/users/search') { search_bar }
 
-  get('/users/:username') { search_user }
+  # def search_user
+  # end
 
+  get('/users/:username') {
+    @user = User.find_by(username: params[:username])
+
+    if @user
+      @images = @user.images
+      erb(:user_profile)
+    else
+      flash[:notice] = 'User not found'
+      redirect '/'
+    end
+  }
+
+  # def image_data_to_json(images = Image.all)
+  # end
+
+
+
+  get('/images_data.json') {
+    content_type :json
+
+    images_data = []
+    images = Image.all
+
+    images.each do |image|
+    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
+  }
 
   get('/current_user_profile') { erb(:current_user_profile) }
 
@@ -213,12 +216,10 @@ class Application < Sinatra::Base
   # :TODO: use 'delete' instead of 'post'
   post('/images/:id') { delete_image }
 
-  get('/images_data.json') { image_data_to_json(@current_user.images) }
-
   get('/map_page') { display_map_page }
 
   get('/logout') { logout_current_user }
 
-  get('/shop_page') { erb(:shop_page) }
+  # get('/shop_page') { erb(:shop_page) }
 
 end
