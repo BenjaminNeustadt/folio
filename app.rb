@@ -19,6 +19,26 @@ require 'mapkick'
 
 module UserController
 
+
+end
+
+module ImageController
+
+end
+
+class Application < Sinatra::Base
+  instance_eval(File.read('config/config.rb'))
+
+  include UserController
+  include ImageController
+
+  enable :sessions
+  register Sinatra::Flash
+  register Sinatra::Partial
+
+  mime_type :js, 'application/javascript'
+
+
   def current_user
     User.find(session[:user_id]) if session[:user_id]
   end
@@ -61,10 +81,6 @@ module UserController
     redirect '/'
   end
 
-end
-
-module ImageController
-
   def all_images
     Image.all
   end
@@ -72,10 +88,6 @@ module ImageController
   #(?) not certain if this is in the correct scope
   def current_user_images
     current_user.images rescue []
-  end
-
-  def display_map_page
-    erb(:map_page)
   end
 
   def delete_image
@@ -124,17 +136,6 @@ module ImageController
     decimal_coordinate
   end
 
-end
-
-class Application < Sinatra::Base
-  instance_eval(File.read('config/config.rb'))
-
-  include UserController
-  include ImageController
-
-  enable :sessions
-  register Sinatra::Flash
-  register Sinatra::Partial
 
   enable :partial_underscores
   set :partial_template_engine, :erb
@@ -188,14 +189,10 @@ class Application < Sinatra::Base
 
   # def image_data_to_json(images = Image.all)
   # end
-
-
-
-  get('/images_data.json') {
-    content_type :json
+  def image_data_to_json(images = Image.all)
+    content_type "application/json"
 
     images_data = []
-    images = Image.all
 
     images.each do |image|
     image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
@@ -207,7 +204,54 @@ class Application < Sinatra::Base
       }
     end
     images_data.to_json
+  end
+
+  get('/images_data.json') { image_data_to_json() }
+
+  get('/users/:username/images_data.json') {
+    content_type :json
+    # content_type 'application/json'
+
+    username = params[:username]
+    user = User.find_by(username: username)
+
+    images_data = []
+
+    if user
+      images = user.images
+    else
+      images = Image.all
+    end
+
+    images.each do |image|
+      image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
   }
+
+  # def display_map_page
+  # end
+
+  # get('/users/:username/map_page') {
+  #   username = params[:username]
+  #   @user = User.find(username: username)
+
+  #   if @user.nil?
+  #     flash[:notice] = 'User not Found'
+  #     redirect '/'
+  #   else
+  #     erb(:map_page)
+  #   end
+  # }
+   get('/map_page') {
+      erb(:map_page)
+   }
 
   get('/current_user_profile') { erb(:current_user_profile) }
 
@@ -215,8 +259,6 @@ class Application < Sinatra::Base
 
   # :TODO: use 'delete' instead of 'post'
   post('/images/:id') { delete_image }
-
-  get('/map_page') { display_map_page }
 
   get('/logout') { logout_current_user }
 

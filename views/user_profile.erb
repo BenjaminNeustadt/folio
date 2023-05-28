@@ -1,5 +1,7 @@
 <h1>User Profile - <%= @user.username %></h1>
 
+<div align="center">
+
 <% if @images.any? %>
   <h2>Uploaded Images</h2>
   <% @images.each do |image| %>
@@ -8,3 +10,5 @@
 <% else %>
   <p>No images uploaded by this user.</p>
 <% end %>
+
+</div>
