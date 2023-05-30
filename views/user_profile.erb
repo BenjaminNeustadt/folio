@@ -12,3 +12,24 @@
 <% end %>
 
 </div>
+
+<%="Hello " + @user.username %>
+<br>
+<%=
+"/users/" + @user.username + "/images_data.json"
+%>
+
+<%=
+
+user_data_url = "/users/" + @user.username + "/images_data.json"
+
+js_map user_data_url,
+       id: "cities-map",
+       width: "800px",
+       height: "500px",
+       tooltips: {hover: false, html: true},
+       markers: {color: "#0f0f0f"},
+       style: "mapbox://styles/zeinzzu/clhxjl52y025v01prbpakagy0",
+       zoom: 1
+
+%>
