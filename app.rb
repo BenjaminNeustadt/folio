@@ -4,24 +4,21 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/flash'
 require 'sinatra/partial'
-
 require 'sinatra/activerecord'
+
+require_relative 'app/controllers/user'
+require_relative 'app/controllers/image'
+
 require_relative 'app/models/user'
 require_relative 'app/models/image'
+
 require 'bcrypt'
 
 require 'exif'
 require 'net/http'
 require 'mapkick'
 
-# :TODO: move these controllers to /controllers folder
 # :TODO: make the modules classes instead
-
-module UserController
-end
-
-module ImageController
-end
 
 class Application < Sinatra::Base
   instance_eval(File.read('config/config.rb'))
@@ -33,16 +30,7 @@ class Application < Sinatra::Base
   register Sinatra::Flash
   register Sinatra::Partial
 
-  mime_type :js, 'application/javascript'
-
-
-  def current_user
-    User.find(session[:user_id]) if session[:user_id]
-  end
-
-  def all_users
-    @users = User.all
-  end
+  # mime_type :js, 'application/javascript'
 
   def search_bar
     search_query = params[:search_query]
@@ -50,15 +38,6 @@ class Application < Sinatra::Base
     erb(:search_results, layout: false)
   end
 
-  def sign_up_user
-    User.create(
-      email: params[:email],
-      password: params[:password], 
-      username: params[:username]
-    )
-    redirect '/'
-  end
-  
   def sign_in_user
     user = User.find_by(email: params[:email])
 
@@ -78,19 +57,16 @@ class Application < Sinatra::Base
     redirect '/'
   end
 
-  def all_images
-    Image.all
-  end
 
   #(?) not certain if this is in the correct scope
   def current_user_images
     current_user.images rescue []
   end
 
-  def delete_image
-    Image.find(params[:id]).destroy
-    redirect '/'
-  end
+  # def delete_image
+  #   Image.find(params[:id]).destroy
+  #   redirect '/'
+  # end
 
   def upload_image
     # Get the user_id from the session
@@ -161,7 +137,10 @@ class Application < Sinatra::Base
       erb(:login_page)
   end
 
-  post('/users/sign_up') { sign_up_user } 
+  post('/users/sign_up') {
+    sign_up_user
+    redirect '/'
+  } 
 
   # search for an indepenedent user's feed/page
   post('/users/sign_in') { sign_in_user }
@@ -235,7 +214,10 @@ class Application < Sinatra::Base
   post('/upload') { upload_image }
 
   # :TODO: use 'delete' instead of 'post'
-  post('/images/:id') { delete_image }
+  post('/images/:id') {
+    delete_image
+    
+  }
 
   get('/logout') { logout_current_user }
 
