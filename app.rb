@@ -18,12 +18,9 @@ require 'mapkick'
 # :TODO: make the modules classes instead
 
 module UserController
-
-
 end
 
 module ImageController
-
 end
 
 class Application < Sinatra::Base
@@ -172,9 +169,6 @@ class Application < Sinatra::Base
 
   post('/users/search') { search_bar }
 
-  # def search_user
-  # end
-
   get('/users/:username') {
     @user = User.find_by(username: params[:username])
 
@@ -187,8 +181,6 @@ class Application < Sinatra::Base
     end
   }
 
-  # def image_data_to_json(images = Image.all)
-  # end
   def image_data_to_json(images = Image.all)
     content_type "application/json"
 
@@ -210,7 +202,6 @@ class Application < Sinatra::Base
 
   get('/users/:username/images_data.json') {
     content_type :json
-    # content_type 'application/json'
 
     username = params[:username]
     user = User.find_by(username: username)
@@ -235,20 +226,6 @@ class Application < Sinatra::Base
     images_data.to_json
   }
 
-  # def display_map_page
-  # end
-
-  # get('/users/:username/map_page') {
-  #   username = params[:username]
-  #   @user = User.find(username: username)
-
-  #   if @user.nil?
-  #     flash[:notice] = 'User not Found'
-  #     redirect '/'
-  #   else
-  #     erb(:map_page)
-  #   end
-  # }
    get('/map_page') {
       erb(:map_page)
    }
@@ -261,7 +238,5 @@ class Application < Sinatra::Base
   post('/images/:id') { delete_image }
 
   get('/logout') { logout_current_user }
-
-  # get('/shop_page') { erb(:shop_page) }
 
 end
