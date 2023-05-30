@@ -130,11 +130,5 @@ describe Application do
 
   # :TODO: test for the existant of other attributes like gps
 
-  around do |example|
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
 
 end
