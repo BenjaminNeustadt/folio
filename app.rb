@@ -19,12 +19,42 @@ require 'net/http'
 require 'mapkick'
 
 # :TODO: make the modules classes instead
+module ImageDataHelper
+
+  def image_data_to_json(images = Image.all)
+    content_type :json
+
+    username = params[:username]
+    user = User.find_by(username: username)
+
+    images_data = []
+
+    if user
+      images = user.images
+    else
+      images = Image.all
+    end
+
+    images.each do |image|
+      image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
+      images_data << {
+        latitude: image.gps_latitude,
+        longitude: image.gps_longitude,
+        label: image.caption,
+        tooltip: image_link
+      }
+    end
+    images_data.to_json
+  end
+
+end
 
 class Application < Sinatra::Base
   instance_eval(File.read('config/config.rb'))
 
   include UserController
   include ImageController
+  include ImageDataHelper
 
   enable :sessions
   register Sinatra::Flash
@@ -45,30 +75,10 @@ class Application < Sinatra::Base
   end
   # mime_type :js, 'application/javascript'
 
-  def search_bar
-    search_query = params[:search_query]
-    @matched_users = User.where("username LIKE ?", "%#{search_query}%")
-    erb(:search_results, layout: false)
-  end
-
-
-  def logout_current_user
-    session.clear
-    flash[:notice] = "Until the next..."
-    redirect '/'
-  end
-
-
   #(?) not certain if this is in the correct scope
   def current_user_images
     current_user.images rescue []
   end
-
-  # def delete_image
-  #   Image.find(params[:id]).destroy
-  #   redirect '/'
-  # end
-
 
   get '/' do
     if session[:user_id]
@@ -93,7 +103,11 @@ class Application < Sinatra::Base
     redirect '/'
   }
 
-  post('/users/search') { search_bar }
+  post('/users/search') {
+    search_query = params[:search_query]
+    @matched_users = User.where("username LIKE ?", "%#{search_query}%")
+    erb(:search_results, layout: false)
+  }
 
   get('/users/:username') {
     @user = User.find_by(username: params[:username])
@@ -107,72 +121,40 @@ class Application < Sinatra::Base
     end
   }
 
-  def image_data_to_json(images = Image.all)
-    content_type "application/json"
+  get('/images_data.json') {
+    image_data_to_json()
+  }
 
-    images_data = []
-
-    images.each do |image|
-    image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
-  end
-
-  get('/images_data.json') { image_data_to_json() }
+  # :TODO: think about whether you need both this and the above
 
   get('/users/:username/images_data.json') {
-    content_type :json
-
-    username = params[:username]
-    user = User.find_by(username: username)
-
-    images_data = []
-
-    if user
-      images = user.images
-    else
-      images = Image.all
-    end
-
-    images.each do |image|
-      image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
+    image_data_to_json()
   }
 
    get('/map_page') {
       erb(:map_page)
    }
 
-  get('/current_user_profile') { erb(:current_user_profile) }
-
+  get('/current_user_profile') do
+    erb(:current_user_profile)
+  end
 
   # :TODO: put this in ExifHelpers module
 
   post('/upload') {
     store_image
-
     redirect '/'
   }
 
   # :TODO: use 'delete' instead of 'post'
   post('/images/:id') {
     delete_image
-    
   }
 
-  get('/logout') { logout_current_user }
+  get('/logout') {
+    session.clear
+    flash[:notice] = "Until the next..."
+    redirect '/'
+  }
 
 end

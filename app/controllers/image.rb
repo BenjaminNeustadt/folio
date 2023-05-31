@@ -47,6 +47,7 @@ module ImageHelper
     extract_exif_data(@file)
   end
 
+
 end
 
 module ImageController
