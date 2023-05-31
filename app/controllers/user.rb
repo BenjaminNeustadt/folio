@@ -18,4 +18,14 @@ module UserController
     )
   end
 
+  def sign_in_user
+    user = User.find_by(email: params[:email])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      flash[:notice] = "Welcome to folio #{user.username}!"
+    else
+      flash[:notice] = "Incorrect email or password"
+    end
+  end
+
 end
