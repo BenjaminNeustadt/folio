@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_many :images, dependent: :destroy
   before_save :encrypt_password
+  has_many :follows, foreign_key: :follower_id
+  has_many :followees, through: :follows
 
   private
 

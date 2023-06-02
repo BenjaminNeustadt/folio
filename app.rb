@@ -8,12 +8,13 @@ require 'sinatra/activerecord'
 
 require_relative 'app/controllers/user_controller'
 require_relative 'app/controllers/image_controller'
+require_relative 'app/controllers/follows_controller'
 
 require_relative 'app/models/user'
 require_relative 'app/models/image'
+require_relative 'app/models/follow'
 
 require_relative 'app/controllers/lib/image_meta_data_json_helper'
-# require_relative 'app/controllers/follows_controller'
 
 require 'bcrypt'
 
@@ -21,41 +22,10 @@ require 'exif'
 require 'net/http'
 require 'mapkick'
 
-# How to put this instead of a module?
-module FollowsController
-  # before_action :set_followee, :set_follower
-  # rescue_from ActiveRecord::RecordInvalid, with: :handle_error
-
-  def handle_error error
-    render json: { error: error.message }, status: :unprocessable_entity
-  end
-
-  # POST users/:user_id/follow/:user_id
-  def follow
-    @follower.followees << @followee
-    render json: { status: 'success - user followed'}
-  end
-
-  # POST users/:user_id/unfollow/:user_id
-  def unfollow
-    @follower.followees.delete(@followee)
-    render json: { status: 'success - user unfollowed'}
-  end
-
-  private
-
-  def set_followee
-    @followee = User.find(params[:followee_id])
-  end
-
-  def set_follower
-    @follower = User.find(params[:user_id])
-  end
-end
-
 class Application < Sinatra::Base
   instance_eval(File.read('config/config.rb'))
 
+  include FollowsController
   include UserController
   include ImageController
   include ImageMetaDataJSONHelper
@@ -77,29 +47,27 @@ class Application < Sinatra::Base
     @bucket = settings.s3.bucket('folio-test-bucket')
     @bucket_objects = @bucket.objects.to_a rescue []  # rescue empty array if bucket does not exist or is empty
   end
-  # mime_type :js, 'application/javascript'
 
-  # FOLLOW
-  def follow
-    @follower.followees << @followee
-    render json: { status: 'success - user followed'}
-  end
-  post('/users/:user_id/follow/:followee_id'){
-    follow
-  }
-
-  def unfollow
-    @follower.followees.delete(@followee)
-    render json: { status: 'success - user unfollowed'}
-  end
-  # UNFOLLOW
-  post('/users/:user_id/unfollow/:followee_id'){
-    unfollow
-  }
   #(?) not certain if this is in the correct scope
   def current_user_images
     current_user.images rescue []
   end
+
+  # FOLLOW
+  post('/users/:user_id/follow/:followee_id'){
+    set_followee(params[:followee_id])
+    set_follower(params[:user_id])
+    follow
+    { status: 'success - user followed' }.to_json
+  }
+
+  # UNFOLLOW
+  post('/users/:user_id/unfollow/:followee_id'){
+    set_followee(params[:followee_id])
+    set_follower(params[:user_id])
+    unfollow
+    { status: 'success - user unfollowed' }.to_json
+  }
 
   get '/' do
     if session[:user_id]

@@ -13,11 +13,17 @@
 
 </div>
 
-<%="Hello " + @user.username %>
-<br>
-<%=
-"/users/" + @user.username + "/images_data.json"
-%>
+<% if @current_user != @user %>
+  <% if @current_user.followees.include?(@user) %>
+    <form action="/users/<%= @current_user.id %>/unfollow/<%= @user.id %>" method="post">
+      <button type="submit">Unfollow</button>
+    </form>
+  <% else %>
+    <form action="/users/<%= @current_user.id %>/follow/<%= @user.id %>" method="post">
+      <button type="submit">Follow</button>
+    </form>
+  <% end %>
+<% end %>
 
 <%=
 
@@ -33,3 +39,4 @@ js_map user_data_url,
        zoom: 1
 
 %>
+
