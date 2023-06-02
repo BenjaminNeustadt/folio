@@ -6,11 +6,14 @@ require 'sinatra/flash'
 require 'sinatra/partial'
 require 'sinatra/activerecord'
 
-require_relative 'app/controllers/user'
-require_relative 'app/controllers/image'
+require_relative 'app/controllers/user_controller'
+require_relative 'app/controllers/image_controller'
 
 require_relative 'app/models/user'
 require_relative 'app/models/image'
+
+require_relative 'app/controllers/lib/image_meta_data_json_helper'
+# require_relative 'app/controllers/follows_controller'
 
 require 'bcrypt'
 
@@ -18,35 +21,36 @@ require 'exif'
 require 'net/http'
 require 'mapkick'
 
-# :TODO: make the modules classes instead
-module ImageDataHelper
+# How to put this instead of a module?
+module FollowsController
+  # before_action :set_followee, :set_follower
+  # rescue_from ActiveRecord::RecordInvalid, with: :handle_error
 
-  def image_data_to_json(images = Image.all)
-    content_type :json
-
-    username = params[:username]
-    user = User.find_by(username: username)
-
-    images_data = []
-
-    if user
-      images = user.images
-    else
-      images = Image.all
-    end
-
-    images.each do |image|
-      image_link = "<img src='" + image.url + "' style='max-width: 200px; max-height: 200px;'>"
-      images_data << {
-        latitude: image.gps_latitude,
-        longitude: image.gps_longitude,
-        label: image.caption,
-        tooltip: image_link
-      }
-    end
-    images_data.to_json
+  def handle_error error
+    render json: { error: error.message }, status: :unprocessable_entity
   end
 
+  # POST users/:user_id/follow/:user_id
+  def follow
+    @follower.followees << @followee
+    render json: { status: 'success - user followed'}
+  end
+
+  # POST users/:user_id/unfollow/:user_id
+  def unfollow
+    @follower.followees.delete(@followee)
+    render json: { status: 'success - user unfollowed'}
+  end
+
+  private
+
+  def set_followee
+    @followee = User.find(params[:followee_id])
+  end
+
+  def set_follower
+    @follower = User.find(params[:user_id])
+  end
 end
 
 class Application < Sinatra::Base
@@ -54,7 +58,7 @@ class Application < Sinatra::Base
 
   include UserController
   include ImageController
-  include ImageDataHelper
+  include ImageMetaDataJSONHelper
 
   enable :sessions
   register Sinatra::Flash
@@ -75,6 +79,23 @@ class Application < Sinatra::Base
   end
   # mime_type :js, 'application/javascript'
 
+  # FOLLOW
+  def follow
+    @follower.followees << @followee
+    render json: { status: 'success - user followed'}
+  end
+  post('/users/:user_id/follow/:followee_id'){
+    follow
+  }
+
+  def unfollow
+    @follower.followees.delete(@followee)
+    render json: { status: 'success - user unfollowed'}
+  end
+  # UNFOLLOW
+  post('/users/:user_id/unfollow/:followee_id'){
+    unfollow
+  }
   #(?) not certain if this is in the correct scope
   def current_user_images
     current_user.images rescue []
@@ -102,6 +123,7 @@ class Application < Sinatra::Base
     sign_in_user
     redirect '/'
   }
+
 
   post('/users/search') {
     search_query = params[:search_query]
@@ -135,9 +157,9 @@ class Application < Sinatra::Base
       erb(:map_page)
    }
 
-  get('/current_user_profile') do
+  get('/current_user_profile') {
     erb(:current_user_profile)
-  end
+  }
 
   # :TODO: put this in ExifHelpers module
 
