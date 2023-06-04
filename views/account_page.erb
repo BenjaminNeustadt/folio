@@ -7,6 +7,7 @@
   </div>
 </div>
 
+<%# SEARCH BAR SECTION%>
 <form>
   <input type="text" id="search_input" name="search_query" placeholder="Search by username">
 </form>
@@ -16,29 +17,73 @@
 <script src="jquery-3.7.0.min.js"></script>
 <script src="search_query.js"></script>
 
-
-
-
+<%# CURRENT USER SECTION%>
   <%= partial :"partials/display_current_user" %>
-  <%= partial :"partials/display_recent_users_links" %>
+
+<%# ALL USERS SECTION%>
+<div class="all_users_section" >
+  <%= partial :"partials/display_users_links" %>
+</div>
 
 
-<a>The people you follow: </a>
-<% if @current_user.followees.present? %>
-  <% @current_user.followees.each do |friend| %>
-    <%= friend.username %>
+<%# PEOPLE YOU FOLLOW SECTION %>
+<div class="people_you_follow_section" >
+  <a>The people you follow: </a>
+  <% if @current_user.followees.present? %>
+    <% @current_user.followees.each do |friend| %>
+      <p><a href="/users/<%= friend.username %>"><%= friend.username %></a></p>
+    <% end %>
+  <% else %>
+    <p>No followees found.</p>
   <% end %>
-<% else %>
-  <p>No followees found.</p>
-<% end %>
+</div>
 
 <form action='/map_page' method='get'>
     <input type="submit" value="Go to map page" />
 </form>
 <br>
 
-  <%= partial :"partials/display_all_images" %>
+<%# BUTTON FOR TOGGLING GOES HERE %>
+<form id="toggle">
+    <input type="submit" value="TOGGLE IMAGES and MAP" />
+</form>
 
-<div align="center">
+<script>
+const buttonElement = document.querySelector('#toggle');
+
+
+
+buttonElement.addEventListener('click', () => {
+  event.preventDefault(); // Prevent form submission
+
+  const imageSection = document.querySelector('#image_section');
+  const mapSection = document.querySelector('#map_section');
+
+  mapSection.classList.toggle('hide-map');
+  imageSection.classList.toggle('hide-images');
+});
+// when you click this button, remove the style that hides the map, and add a style that hides the images
+</script>
+
+<style>
+
+.hide-map {
+  display: none;
+}
+
+.hide-images {
+  display: none;
+}
+
+</style>
+<br>
+
+<%# IMAGE LIST SECTION %>
+<div id="image_section" class="image_section" align="center">
+  <%= partial :"partials/display_all_images" %>
+</div>
+
+<%# MAP SECTION %>
+<div id="map_section" class="map_section" align="center">
     <%= partial :"partials/map_with_images" %>
 </div>
