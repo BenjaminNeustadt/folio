@@ -12,34 +12,11 @@
 </form>
 
 <div id="search_results"></div>
+<%# For the search bar autocomplete %>
+<script src="jquery-3.7.0.min.js"></script>
+<script src="search_query.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-    var input = $('#search_input');
-    var results = $('#search_results');
 
-    input.on('input', function() {
-      var query = input.val();
-
-      if (query.length >= 2) {
-        $.ajax({
-          url: '/users/search',
-          type: 'POST',
-          data: { search_query: query },
-          success: function(response) {
-            results.html(response);
-          },
-          error: function() {
-            results.html('<p>Error occurred while searching.</p>');
-          }
-        });
-      } else {
-        results.empty();
-      }
-    });
-  });
-</script>
 
 
   <%= partial :"partials/display_current_user" %>
