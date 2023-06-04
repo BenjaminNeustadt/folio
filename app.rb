@@ -58,7 +58,8 @@ class Application < Sinatra::Base
     set_followee(params[:followee_id])
     set_follower(params[:user_id])
     follow
-    { status: 'success - user followed' }.to_json
+    response.body = { status: 'success - user followed' }.to_json
+    redirect back
   }
 
   # UNFOLLOW
@@ -66,7 +67,8 @@ class Application < Sinatra::Base
     set_followee(params[:followee_id])
     set_follower(params[:user_id])
     unfollow
-    { status: 'success - user unfollowed' }.to_json
+    response.body = { status: 'success - user unfollowed' }.to_json
+    redirect back
   }
 
   get '/' do

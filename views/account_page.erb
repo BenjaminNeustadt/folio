@@ -46,6 +46,15 @@
   <%= partial :"partials/display_recent_users_links" %>
 
 
+<a>The people you follow: </a>
+<% if @current_user.followees.present? %>
+  <% @current_user.followees.each do |friend| %>
+    <%= friend.username %>
+  <% end %>
+<% else %>
+  <p>No followees found.</p>
+<% end %>
+
 <form action='/map_page' method='get'>
     <input type="submit" value="Go to map page" />
 </form>

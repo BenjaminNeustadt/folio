@@ -13,13 +13,13 @@
 
 </div>
 
-<% if @current_user != @user %>
-  <% if @current_user.followees.include?(@user) %>
-    <form action="/users/<%= @current_user.id %>/unfollow/<%= @user.id %>" method="post">
+<% if current_user != @user %>
+  <% if current_user.followees.include?(@user) %>
+    <form action="/users/<%= current_user.id %>/unfollow/<%= @user.id %>" method="post">
       <button type="submit">Unfollow</button>
     </form>
   <% else %>
-    <form action="/users/<%= @current_user.id %>/follow/<%= @user.id %>" method="post">
+    <form action="/users/<%= current_user.id %>/follow/<%= @user.id %>" method="post">
       <button type="submit">Follow</button>
     </form>
   <% end %>
