@@ -1,17 +1,9 @@
 
 module FollowsController
 
-  # before_action :set_followee, :set_follower
-  # rescue_from ActiveRecord::RecordInvalid, with: :handle_error
-
-  # def handle_error error
-  #   render json: { error: error.message }, status: :unprocessable_entity
-  # end
-
   # POST users/:user_id/follow/:user_id
   def follow
     @follower.followees << @followee
-    # response.body = { status: 'success - user followed'}.to_json
   end
 
   # POST users/:user_id/unfollow/:user_id
@@ -30,4 +22,3 @@ module FollowsController
   end
 
 end
-
