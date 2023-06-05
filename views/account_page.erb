@@ -34,31 +34,17 @@
 <br>
 
 <%# BUTTON FOR TOGGLING GOES HERE %>
-<%# <form id="toggle">
-    <input type="submit" value="TOGGLE IMAGES and MAP" />
-</form> %>
-<button id="toggleButton" onclick="toggleMap()">Show Map</button>
 
+<button id="toggleButton" onclick="toggleMap()">Show Map</button>
 <button id="followingButton" onclick="toggleFollowing()">Following</button>
 
 <script>
 
-  // when you click this button, remove the style that hides the map, and add a style that hides the images
-  // const buttonElement = document.querySelector('#toggle');
-
-  // buttonElement.addEventListener('click', () => {
-  //   event.preventDefault(); // Prevent form submission
-
-  //   const imageSection = document.querySelector('#image-section');
-  //   const mapSection = document.querySelector('#map-section');
-
-  //   mapSection.classList.toggle('hide-map');
-  //   imageSection.classList.toggle('hide-images');
-  // });
   function toggleMap() {
   const imageSection = document.querySelector('#image-section');
   const mapSection = document.querySelector('#map-section');
   const toggleButton = document.querySelector('#toggleButton');
+  const followingSection = document.querySelector('#following-section');
 
   if (imageSection.classList.contains('hidden')) {
     imageSection.classList.remove('hidden');
@@ -70,6 +56,8 @@
     imageSection.classList.remove('visible');
     imageSection.classList.add('hidden');
     mapSection.classList.remove('hidden');
+    followingSection.classList.remove('visible');
+    followingSection.classList.add('hidden');
     mapSection.classList.add('visible');
     toggleButton.textContent = 'Show Images';
   }
@@ -84,28 +72,17 @@
 
     if (followingSection.classList.contains('hidden')) {
       followingSection.classList.remove('hidden');
+      followingSection.classList.add('visble');
       imageMapSection.classList.add('hidden');
-      // followingButton.textContent = 'Following';
-      // followingButton.textContent = 'All Users';
     } else {
       followingSection.classList.add('hidden');
       imageMapSection.classList.remove('hidden');
-      // mapSection.classList.remove('hidden');
-      // toggleButton.textContent = 'Show Images';
-      // followingButton.textContent = 'Following';
     }
   }
 </script>
 
 <style>
 
-/* .hide-map {
-  display: none;
-}
-
-.hide-images {
-  display: none;
-} */
 .hidden {
   opacity: 0;
   pointer-events: none;
@@ -125,6 +102,7 @@
   width: 100%; /* Adjust the width as needed */
   height: 500px; /* Adjust the height as needed */
 }
+
 
 </style>
 <br>
