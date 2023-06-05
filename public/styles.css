@@ -1,5 +1,5 @@
 body {
-  background-color: grey !important;
+  background-color: rgb(26, 70, 124) !important;
 }
 
 .image-item.add-photo {
@@ -46,4 +46,14 @@ body {
 
 .image-item {
   text-align: center;
+}
+
+/* =============================  */
+/* For hiding/ revealing sections */
+/* =============================  */
+
+
+#map-section {
+  width: 100%; /* Adjust the width as needed */
+  height: 500px; /* Adjust the height as needed */
 }

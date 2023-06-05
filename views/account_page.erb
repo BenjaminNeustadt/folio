@@ -33,83 +33,86 @@
 </form>
 <br>
 
-<%# BUTTON FOR TOGGLING GOES HERE %>
 
-<button id="toggleButton" onclick="toggleMap()">Show Map</button>
-<button id="followingButton" onclick="toggleFollowing()">Following</button>
+<%# BUTTONS FOR TOGGLING SECTIONS %>
+<button onclick="showImages()">Show Images</button>
+<button onclick="showMap()">Show Map</button>
+<button onclick="showFollowing()">Following</button>
 
 <script>
-
-  function toggleMap() {
-  const imageSection = document.querySelector('#image-section');
-  const mapSection = document.querySelector('#map-section');
-  const toggleButton = document.querySelector('#toggleButton');
-  const followingSection = document.querySelector('#following-section');
-
-  if (imageSection.classList.contains('hidden')) {
-    imageSection.classList.remove('hidden');
-    imageSection.classList.add('visible');
-    mapSection.classList.remove('visible');
-    mapSection.classList.add('hidden');
-    toggleButton.textContent = 'Show Map';
-  } else {
-    imageSection.classList.remove('visible');
-    imageSection.classList.add('hidden');
-    mapSection.classList.remove('hidden');
-    followingSection.classList.remove('visible');
-    followingSection.classList.add('hidden');
-    mapSection.classList.add('visible');
-    toggleButton.textContent = 'Show Images';
-  }
-}
-
-  function toggleFollowing() {
-    const followingSection = document.querySelector('#following-section');
-    const imageMapSection = document.querySelector('#something');
+  function showImages() {
+    const imageSection = document.querySelector('#image-section');
     const mapSection = document.querySelector('#map-section');
-    const toggleButton = document.querySelector('#toggleButton');
-    const followingButton = document.querySelector('#followingButton');
+    const followingSection = document.querySelector('#following-section');
 
-    if (followingSection.classList.contains('hidden')) {
-      followingSection.classList.remove('hidden');
-      followingSection.classList.add('visble');
-      imageMapSection.classList.add('hidden');
-    } else {
-      followingSection.classList.add('hidden');
-      imageMapSection.classList.remove('hidden');
-    }
+    imageSection.style.display = 'block';
+    mapSection.style.display = 'none';
+    mapSection.classList.add('hidden');
+    followingSection.style.display = 'none';
+  }
+
+  function showMap() {
+    const imageSection = document.querySelector('#image-section');
+    const mapSection = document.querySelector('#map-section');
+    const followingSection = document.querySelector('#following-section');
+
+    imageSection.style.display = 'none';
+    // mapSection.style.display = 'block';
+    mapSection.classList.remove('hidden');
+    // mapSection.classList.add('visible');
+    followingSection.style.display = 'none';
+  }
+
+  function showFollowing() {
+    const imageSection = document.querySelector('#image-section');
+    const mapSection = document.querySelector('#map-section');
+    const followingSection = document.querySelector('#following-section');
+
+    imageSection.style.display = 'none';
+    // mapSection.style.display = 'none';
+    mapSection.classList.add('hidden');
+    followingSection.style.display = 'block';
   }
 </script>
 
 <style>
+  /* #map-section,
+  #following-section {
+    display: none;
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-  height: 0;
-}
+  } */
+   .hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    height: 0;
+  }
 
-.visible {
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
-  height: auto;
-  transition: opacity 0s ease-in;
-}
+  .visible {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    height: auto;
+    transition: opacity 0s ease-in;
+  }
 
-#map-section {
-  width: 100%; /* Adjust the width as needed */
-  height: 500px; /* Adjust the height as needed */
-}
+  /* Remove the display: none property from .section */
+  .section {
+    /* display: none; */
+  }
 
+  #map-section {
+    width: 100%;
+    height: 500px;
+  }
 
+/* NOT the display = 'none' way of doing it. */
 </style>
 <br>
 
 <%# PEOPLE YOU FOLLOW SECTION %>
-<div id="following-section" class="hidden" >
-  <a>The people you follow: </a>
+<div id="following-section">
+  <a>The people you follow:</a>
   <% if @current_user.followees.present? %>
     <% @current_user.followees.each do |friend| %>
       <p><a href="/users/<%= friend.username %>"><%= friend.username %></a></p>
@@ -119,16 +122,16 @@
   <% end %>
 </div>
 
-
-<div id="something">
+<div id="image-section">
   <%# IMAGE LIST SECTION %>
-  <div style="padding-left:20px" id="image-section"  align="center">
+  <div style="padding-left: 20px" align="center">
     <%= partial :"partials/display_all_images" %>
   </div>
+</div>
 
+<div id="map-section" class="hidden">
   <%# MAP SECTION %>
-
-  <div id="map-section" class="hidden" align="center">
-      <%= partial :"partials/map_with_images" %>
+  <div align="center">
+    <%= partial :"partials/map_with_images" %>
   </div>
 </div>
