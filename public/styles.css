@@ -1,3 +1,7 @@
+body {
+  background-color: grey !important;
+}
+
 .image-item.add-photo {
   text-align: center;
   background-color: #f1f1f1;

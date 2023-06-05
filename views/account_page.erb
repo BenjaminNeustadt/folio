@@ -18,7 +18,9 @@
 <script src="search_query.js"></script>
 
 <%# CURRENT USER SECTION%>
+<div class="current_logged_in_user">
   <%= partial :"partials/display_current_user" %>
+</div>
 
 <%# ALL USERS SECTION%>
 <div class="all_users_section" >
@@ -26,8 +28,109 @@
 </div>
 
 
+<form action='/map_page' method='get'>
+    <input type="submit" value="Go to map page" />
+</form>
+<br>
+
+<%# BUTTON FOR TOGGLING GOES HERE %>
+<%# <form id="toggle">
+    <input type="submit" value="TOGGLE IMAGES and MAP" />
+</form> %>
+<button id="toggleButton" onclick="toggleMap()">Show Map</button>
+
+<button id="followingButton" onclick="toggleFollowing()">Following</button>
+
+<script>
+
+  // when you click this button, remove the style that hides the map, and add a style that hides the images
+  // const buttonElement = document.querySelector('#toggle');
+
+  // buttonElement.addEventListener('click', () => {
+  //   event.preventDefault(); // Prevent form submission
+
+  //   const imageSection = document.querySelector('#image-section');
+  //   const mapSection = document.querySelector('#map-section');
+
+  //   mapSection.classList.toggle('hide-map');
+  //   imageSection.classList.toggle('hide-images');
+  // });
+  function toggleMap() {
+  const imageSection = document.querySelector('#image-section');
+  const mapSection = document.querySelector('#map-section');
+  const toggleButton = document.querySelector('#toggleButton');
+
+  if (imageSection.classList.contains('hidden')) {
+    imageSection.classList.remove('hidden');
+    imageSection.classList.add('visible');
+    mapSection.classList.remove('visible');
+    mapSection.classList.add('hidden');
+    toggleButton.textContent = 'Show Map';
+  } else {
+    imageSection.classList.remove('visible');
+    imageSection.classList.add('hidden');
+    mapSection.classList.remove('hidden');
+    mapSection.classList.add('visible');
+    toggleButton.textContent = 'Show Images';
+  }
+}
+
+  function toggleFollowing() {
+    const followingSection = document.querySelector('#following-section');
+    const imageMapSection = document.querySelector('#something');
+    const mapSection = document.querySelector('#map-section');
+    const toggleButton = document.querySelector('#toggleButton');
+    const followingButton = document.querySelector('#followingButton');
+
+    if (followingSection.classList.contains('hidden')) {
+      followingSection.classList.remove('hidden');
+      imageMapSection.classList.add('hidden');
+      // followingButton.textContent = 'Following';
+      // followingButton.textContent = 'All Users';
+    } else {
+      followingSection.classList.add('hidden');
+      imageMapSection.classList.remove('hidden');
+      // mapSection.classList.remove('hidden');
+      // toggleButton.textContent = 'Show Images';
+      // followingButton.textContent = 'Following';
+    }
+  }
+</script>
+
+<style>
+
+/* .hide-map {
+  display: none;
+}
+
+.hide-images {
+  display: none;
+} */
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  height: 0;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  height: auto;
+  transition: opacity 0s ease-in;
+}
+
+#map-section {
+  width: 100%; /* Adjust the width as needed */
+  height: 500px; /* Adjust the height as needed */
+}
+
+</style>
+<br>
+
 <%# PEOPLE YOU FOLLOW SECTION %>
-<div class="people_you_follow_section" >
+<div id="following-section" class="hidden" >
   <a>The people you follow: </a>
   <% if @current_user.followees.present? %>
     <% @current_user.followees.each do |friend| %>
@@ -38,52 +141,16 @@
   <% end %>
 </div>
 
-<form action='/map_page' method='get'>
-    <input type="submit" value="Go to map page" />
-</form>
-<br>
 
-<%# BUTTON FOR TOGGLING GOES HERE %>
-<form id="toggle">
-    <input type="submit" value="TOGGLE IMAGES and MAP" />
-</form>
+<div id="something">
+  <%# IMAGE LIST SECTION %>
+  <div style="padding-left:20px" id="image-section"  align="center">
+    <%= partial :"partials/display_all_images" %>
+  </div>
 
-<script>
-const buttonElement = document.querySelector('#toggle');
+  <%# MAP SECTION %>
 
-
-
-buttonElement.addEventListener('click', () => {
-  event.preventDefault(); // Prevent form submission
-
-  const imageSection = document.querySelector('#image_section');
-  const mapSection = document.querySelector('#map_section');
-
-  mapSection.classList.toggle('hide-map');
-  imageSection.classList.toggle('hide-images');
-});
-// when you click this button, remove the style that hides the map, and add a style that hides the images
-</script>
-
-<style>
-
-.hide-map {
-  display: none;
-}
-
-.hide-images {
-  display: none;
-}
-
-</style>
-<br>
-
-<%# IMAGE LIST SECTION %>
-<div id="image_section" class="image_section" align="center">
-  <%= partial :"partials/display_all_images" %>
-</div>
-
-<%# MAP SECTION %>
-<div id="map_section" class="map_section" align="center">
-    <%= partial :"partials/map_with_images" %>
+  <div id="map-section" class="hidden" align="center">
+      <%= partial :"partials/map_with_images" %>
+  </div>
 </div>
