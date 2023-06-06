@@ -84,6 +84,10 @@ class Application < Sinatra::Base
       erb(:login_page)
   end
 
+  get '/settings' do
+    erb :settings
+  end
+
   post('/users/sign_up') {
     sign_up_user
     redirect '/'
