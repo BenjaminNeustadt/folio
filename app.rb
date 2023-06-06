@@ -93,7 +93,7 @@ class Application < Sinatra::Base
   end
 
   post '/settings' do
-    if @current_user.update(background_color: params[:background-color])
+    if @current_user.update(background_color: params[:background_color])
       flash[:notice] = 'Background color saved.'
     else
       flash[:error] = 'Failed to save background color.'
