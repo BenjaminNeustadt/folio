@@ -8,9 +8,7 @@
   --add_photo_icon-color: #aaa;
 }
 
-body {
-  background-color: var(--background-color) !important;
-}/* FOR dynamic backgournd for USER */
+/* FOR dynamic backgournd for USER */
 
 body.light {
   background-color: #fff;
