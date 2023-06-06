@@ -101,6 +101,9 @@ class Application < Sinatra::Base
     redirect '/settings'
   end
 
+  get '/all_users' do
+    erb(:all_users)
+  end
 
   post('/users/sign_up') {
     sign_up_user
