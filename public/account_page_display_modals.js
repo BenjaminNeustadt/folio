@@ -4,7 +4,7 @@
     const followingSection = document.querySelector('#following-section');
 
     imageSection.style.display = 'block';
-    mapSection.querySelector('#your-hidden-map-container').id = 'your-visible-map-container';
+    mapSection.querySelector('#your-visible-map-container').id = 'your-hidden-map-container';
     followingSection.style.display = 'none';
   }
 
