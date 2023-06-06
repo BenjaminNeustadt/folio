@@ -2,7 +2,7 @@
   --primary-color: grey;
   --secondary-color: #b6cdbd;
   --tertiary-color: red;
-  --background-color: #d5d5d5;
+  --background-color: #e4e4e4;
   --highlight-color: purple;
   --image_background-color: #f1f1f1;
   --add_photo_icon-color: #aaa;
@@ -73,4 +73,15 @@ body {
 
 #following-section {
   display: none;
+}
+
+#image-section {
+  /* border: 10px solid black;   */
+} 
+
+.display_modal_box_account_page {
+  margin-top: 10px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+ border: 5px solid black;
 }

@@ -42,20 +42,24 @@
 
 
 <%# PEOPLE YOU FOLLOW SECTION %>
-<div id="following-section">
-    <%= partial :"partials/display_all_followees" %>
-</div>
+<div class="display_modal_box_account_page">
 
-<div id="image-section">
-  <%# IMAGE LIST SECTION %>
-  <div style="padding-left: 20px" align="center">
-    <%= partial :"partials/display_all_images" %>
+  <div id="following-section">
+      <%= partial :"partials/display_all_followees" %>
   </div>
-</div>
 
-<div id="map-section">
-  <%# MAP SECTION %>
-  <div id="your-hidden-map-container" align="center">
-    <%= partial :"partials/map_with_images" %>
+  <div id="image-section">
+    <%# IMAGE LIST SECTION %>
+    <div style="padding-left: 20px" align="center">
+      <%= partial :"partials/display_all_images" %>
+    </div>
   </div>
+
+  <div id="map-section">
+    <%# MAP SECTION %>
+    <div id="your-hidden-map-container" align="center">
+      <%= partial :"partials/map_with_images" %>
+    </div>
+  </div>
+
 </div>
