@@ -8,7 +8,7 @@
     <link href="/styles.css" rel="stylesheet" type="text/css" />
   </head>
 
-  <body class="<%= @current_user.background_color || 'light' %>">
+  <body class="<%= @current_user&.background_color || 'light' %>">
 
     <header>
     </header>
