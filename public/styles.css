@@ -79,7 +79,7 @@ body {
   /* border: 10px solid black;   */
 } 
 
-.display_modal_box_account_page {
+#display_modal_box_account_page {
   margin-top: 10px;
   padding-bottom: 20px;
   padding-top: 20px;
