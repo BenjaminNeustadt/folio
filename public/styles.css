@@ -1,7 +1,18 @@
-.mapboxgl-canvas {
-
+#your-hidden-map-container {
+  visibility: hidden;
+  position: absolute;
+  top: -10000px;
 }
 
+#your-visible-map-container {
+  visibility: visible;
+  position: relative;
+  top: 0;
+}
+
+#following-section {
+  display: none;
+}
 body {
   background-color: white !important;
 }
