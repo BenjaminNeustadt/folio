@@ -1,18 +1,19 @@
 <div class="form">
-  <a>Welcome...</a>
   <%= flash[:notice] %>
   <div>
     <h3>Account Page</h3>
-    <br>
   </div>
 </div>
 
 <%# SEARCH BAR SECTION %>
-<form>
-  <input type="text" id="search_input" name="search_query" placeholder="Search by username">
-</form>
+<div class="find_users">
+  <form>
+    <input type="text" id="search_input" name="search_query" placeholder="Search by username">
+  </form>
 
-<div id="search_results"></div>
+  <div id="search_results"></div>
+</div>
+
 
 <%# For the search bar autocomplete %>
 <script src="jquery-3.7.0.min.js"></script>
