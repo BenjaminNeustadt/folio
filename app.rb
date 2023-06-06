@@ -84,9 +84,23 @@ class Application < Sinatra::Base
       erb(:login_page)
   end
 
+  #==================== 
+  # SETTINGS FOR USER
+  #==================== 
+
   get '/settings' do
     erb :settings
   end
+
+  post '/settings' do
+    if @current_user.update(background_color: params[:background-color])
+      flash[:notice] = 'Background color saved.'
+    else
+      flash[:error] = 'Failed to save background color.'
+    end
+    redirect '/settings'
+  end
+
 
   post('/users/sign_up') {
     sign_up_user
