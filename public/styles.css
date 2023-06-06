@@ -10,6 +10,16 @@
 
 body {
   background-color: var(--background-color) !important;
+}/* FOR dynamic backgournd for USER */
+
+body.light {
+  background-color: #fff;
+  color: #000;
+}
+
+body.dark {
+  background-color: #333;
+  color: #fff;
 }
 
 .image-item.add-photo {
@@ -91,3 +101,5 @@ body {
   padding-bottom: 20px;
   padding-top: 20px;
 }
+
+
