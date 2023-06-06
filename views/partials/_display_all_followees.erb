@@ -1,0 +1,8 @@
+  <a>The people you follow:</a>
+  <% if @current_user.followees.present? %>
+    <% @current_user.followees.each do |friend| %>
+      <p><a href="/users/<%= friend.username %>"><%= friend.username %></a></p>
+    <% end %>
+  <% else %>
+    <p>No followees found.</p>
+  <% end %>
