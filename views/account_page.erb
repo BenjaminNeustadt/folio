@@ -38,37 +38,7 @@
 <button onclick="showMap()">Show Map</button>
 <button onclick="showFollowing()">Following</button>
 
-<script>
- function showImages() {
-    const imageSection = document.querySelector('#image-section');
-    const mapSection = document.querySelector('#map-section');
-    const followingSection = document.querySelector('#following-section');
-
-    imageSection.style.display = 'block';
-    mapSection.querySelector('#your-hidden-map-container').id = 'your-visible-map-container';
-    followingSection.style.display = 'none';
-  }
-
-  function showMap() {
-    const imageSection = document.querySelector('#image-section');
-    const mapSection = document.querySelector('#map-section');
-    const followingSection = document.querySelector('#following-section');
-
-    imageSection.style.display = 'none';
-    mapSection.querySelector('#your-hidden-map-container').id = 'your-visible-map-container';
-    followingSection.style.display = 'none';
-  }
-
-  function showFollowing() {
-    const imageSection = document.querySelector('#image-section');
-    const mapSection = document.querySelector('#map-section');
-    const followingSection = document.querySelector('#following-section');
-
-    imageSection.style.display = 'none';
-    mapSection.querySelector('#your-visible-map-container').id = 'your-hidden-map-container';
-    followingSection.style.display = 'block';
-  }
-</script>
+<script src="account_page_display_modals.js"></script>
 
 <style>
   #your-hidden-map-container {
@@ -81,6 +51,10 @@
     visibility: visible;
     position: relative;
     top: 0;
+  }
+
+  #following-section {
+    display: none;
   }
 </style>
 <br>
