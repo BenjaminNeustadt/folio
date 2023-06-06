@@ -39,13 +39,13 @@
 <button onclick="showFollowing()">Following</button>
 
 <script>
-  function showImages() {
+ function showImages() {
     const imageSection = document.querySelector('#image-section');
     const mapSection = document.querySelector('#map-section');
     const followingSection = document.querySelector('#following-section');
 
     imageSection.style.display = 'block';
-    mapSection.style.display = 'none';
+    mapSection.querySelector('#your-hidden-map-container').id = 'your-visible-map-container';
     followingSection.style.display = 'none';
   }
 
@@ -55,7 +55,7 @@
     const followingSection = document.querySelector('#following-section');
 
     imageSection.style.display = 'none';
-    mapSection.style.display = 'block';
+    mapSection.querySelector('#your-hidden-map-container').id = 'your-visible-map-container';
     followingSection.style.display = 'none';
   }
 
@@ -65,15 +65,22 @@
     const followingSection = document.querySelector('#following-section');
 
     imageSection.style.display = 'none';
-    mapSection.style.display = 'none';
+    mapSection.querySelector('#your-visible-map-container').id = 'your-hidden-map-container';
     followingSection.style.display = 'block';
   }
 </script>
 
 <style>
-  #map-section,
-  #following-section {
-    display: none;
+  #your-hidden-map-container {
+    visibility: hidden;
+    position: absolute;
+    top: -10000px;
+  }
+
+  #your-visible-map-container {
+    visibility: visible;
+    position: relative;
+    top: 0;
   }
 </style>
 <br>
@@ -99,7 +106,7 @@
 
 <div id="map-section">
   <%# MAP SECTION %>
-  <div align="center">
+  <div id="your-hidden-map-container" align="center">
     <%= partial :"partials/map_with_images" %>
   </div>
 </div>

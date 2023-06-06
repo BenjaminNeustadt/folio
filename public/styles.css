@@ -1,5 +1,9 @@
+.mapboxgl-canvas {
+
+}
+
 body {
-  background-color: pink !important;
+  background-color: white !important;
 }
 
 .image-item.add-photo {
