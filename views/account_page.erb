@@ -7,32 +7,31 @@
   </div>
 </div>
 
-<%# SEARCH BAR SECTION%>
+<%# SEARCH BAR SECTION %>
 <form>
   <input type="text" id="search_input" name="search_query" placeholder="Search by username">
 </form>
 
 <div id="search_results"></div>
+
 <%# For the search bar autocomplete %>
 <script src="jquery-3.7.0.min.js"></script>
 <script src="search_query.js"></script>
 
-<%# CURRENT USER SECTION%>
+<%# CURRENT USER SECTION %>
 <div class="current_logged_in_user">
   <%= partial :"partials/display_current_user" %>
 </div>
 
-<%# ALL USERS SECTION%>
-<div class="all_users_section" >
+<%# ALL USERS SECTION %>
+<div class="all_users_section">
   <%= partial :"partials/display_users_links" %>
 </div>
 
-
 <form action='/map_page' method='get'>
-    <input type="submit" value="Go to map page" />
+  <input type="submit" value="Go to map page" />
 </form>
 <br>
-
 
 <%# BUTTONS FOR TOGGLING SECTIONS %>
 <button onclick="showImages()">Show Images</button>
@@ -47,7 +46,6 @@
 
     imageSection.style.display = 'block';
     mapSection.style.display = 'none';
-    mapSection.classList.add('hidden');
     followingSection.style.display = 'none';
   }
 
@@ -57,9 +55,7 @@
     const followingSection = document.querySelector('#following-section');
 
     imageSection.style.display = 'none';
-    // mapSection.style.display = 'block';
-    mapSection.classList.remove('hidden');
-    // mapSection.classList.add('visible');
+    mapSection.style.display = 'block';
     followingSection.style.display = 'none';
   }
 
@@ -69,44 +65,16 @@
     const followingSection = document.querySelector('#following-section');
 
     imageSection.style.display = 'none';
-    // mapSection.style.display = 'none';
-    mapSection.classList.add('hidden');
+    mapSection.style.display = 'none';
     followingSection.style.display = 'block';
   }
 </script>
 
 <style>
-  /* #map-section,
+  #map-section,
   #following-section {
     display: none;
-
-  } */
-   .hidden {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    height: 0;
   }
-
-  .visible {
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-    height: auto;
-    transition: opacity 0s ease-in;
-  }
-
-  /* Remove the display: none property from .section */
-  .section {
-    /* display: none; */
-  }
-
-  #map-section {
-    width: 100%;
-    height: 500px;
-  }
-
-/* NOT the display = 'none' way of doing it. */
 </style>
 <br>
 
@@ -129,7 +97,7 @@
   </div>
 </div>
 
-<div id="map-section" class="hidden">
+<div id="map-section">
   <%# MAP SECTION %>
   <div align="center">
     <%= partial :"partials/map_with_images" %>
