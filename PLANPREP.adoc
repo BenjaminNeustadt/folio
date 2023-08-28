@@ -306,6 +306,10 @@ https://github.com/Jaay06/fun-form-validation.git
 Using bootstrap for the navbar styling: https://getbootstrap.com/docs/4.0/components/navs/#tabs
 Same as above: https://getbootstrap.com/docs/4.0/components/navs/#javascript-behavior <<< used this one
 
+
+Detecting the browser's theme with CSS media query prefers-color-scheme:
+https://medium.com/batary/detecting-the-browsers-theme-with-css-media-query-prefers-color-scheme-268456478b63
+
 == Back-end sandbox ideas
 https://github.com/maxjustus/sinatra-authentication
 https://github.com/jeremyevans/rodauth
@@ -363,3 +367,15 @@ Users can browse throught the collection and add items to their favourites...enc
 The users favourites collection gets added to a map, according to the location it was produced, emphasising the diversity of the museums collection
 
 Users can search for items according to their interests...
+
+
+## Considerations for user verification
+1. In the email you will have some call to action. Be mindful of the ways in which that call to action can interact with the server
+      1. anchors are only able to make GET requests
+      2. Maybe you can embed a form in the email, but you'll have to confirm if this is allowed in an email
+      3. The URL (the protocol, host and port) of your server needs to be known ahead of time so that when the email reader
+            interacts with the call to action it can be routed properly
+2. Sending emails takes a long time. This is why ActionMailer exists in Rails, and tpyically emails are passed over to ActiveJob.
+      The idea being that you want to seperate request handling and sending emails.
+3. The URL that handles the call to action for verification must be secure. Otherwise it's useless because anyone can call it
+      1. You need a way to ensure that the URL is unique in some way 
