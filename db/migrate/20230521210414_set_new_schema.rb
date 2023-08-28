@@ -16,6 +16,7 @@ class SetNewSchema < ActiveRecord::Migration[7.0]
       t.string "username", null: false
       t.string "email", null: false
       t.string "password", null: false
+      t.boolean "verified", default: false, null: false
     end
   
     add_foreign_key "images", "users"
