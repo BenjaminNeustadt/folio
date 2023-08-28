@@ -24,3 +24,5 @@ group :development, :test do
   gem "sqlite3",              "~> 1.6"
   gem "webrick",              "~> 1.8"
 end
+
+gem "sendgrid-ruby", "~> 6.6"
