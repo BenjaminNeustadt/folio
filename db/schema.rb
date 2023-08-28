@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_06_155440) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_08_111912) do
   create_table "follows", force: :cascade do |t|
     t.integer "follower_id", null: false
     t.integer "followee_id", null: false
@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_06_155440) do
     t.string "email", null: false
     t.string "password", null: false
     t.string "background_color"
+    t.boolean "verified_account", default: false, null: false
   end
 
   add_foreign_key "follows", "users", column: "followee_id"
