@@ -4,7 +4,7 @@ require_relative './lib/image_helper'
 
 
 
-module ImageController
+module ImagesController
 
   include EXIFReaderHelper
   include ImageHelper
