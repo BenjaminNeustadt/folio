@@ -6,8 +6,8 @@ require 'sinatra/flash'
 require 'sinatra/partial'
 require 'sinatra/activerecord'
 
-require_relative 'app/controllers/user_controller'
-require_relative 'app/controllers/image_controller'
+require_relative 'app/controllers/users_controller'
+require_relative 'app/controllers/images_controller'
 require_relative 'app/controllers/follows_controller'
 
 require_relative 'app/models/user'
@@ -26,8 +26,8 @@ class Application < Sinatra::Base
   instance_eval(File.read('config/config.rb'))
 
   include FollowsController
-  include UserController
-  include ImageController
+  include UsersController
+  include ImagesController
   include ImageMetaDataJSONHelper
 
   enable :sessions
