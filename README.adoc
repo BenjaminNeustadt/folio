@@ -30,3 +30,23 @@ S3_ACCESS_KEY=''
 S3_SECRET_KEY=''
 MAPBOX_ACCESS_TOKEN=''
 ----
+
+== App in development 
+
+To start the app in development:
+
+[source,sh]
+----
+rackup
+
+# you should see this:
+Puma starting in single mode...
+* Puma version: 6.3.0 (ruby 3.0.0-p0) ("Mugi No Toki Itaru")
+*  Min threads: 0
+*  Max threads: 5
+*  Environment: development
+*          PID: 36602
+* Listening on http://127.0.0.1:9292
+* Listening on http://[::1]:9292
+Use Ctrl-C to stop
+----
