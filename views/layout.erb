@@ -13,9 +13,13 @@
     <header>
     </header>
 
-      <%= partial :"partials/navbar" %>
-      <%= yield %>
+<%# Maybe take this out %>
 
+      <% if @user %>
+        <%= partial :"partials/navbar" %>
+      <% end %>
+      
+      <%= yield %>
 
     <footer>
       <%= partial :"partials/debug" %>
