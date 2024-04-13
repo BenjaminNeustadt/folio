@@ -36,12 +36,14 @@ GEM
       concurrent-ruby (~> 1.0)
     jmespath (1.6.2)
     mapkick-rb (0.1.4)
+    mini_portile2 (2.8.5)
     minitest (5.18.0)
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.9)
-    nokogiri (1.14.4-arm64-darwin)
+    nokogiri (1.14.4)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     puma (6.2.2)
       nio4r (~> 2.0)
@@ -87,7 +89,8 @@ GEM
       sinatra (>= 1.0.0)
     sinatra-partial (1.0.1)
       sinatra (>= 1.4)
-    sqlite3 (1.6.2-arm64-darwin)
+    sqlite3 (1.6.2)
+      mini_portile2 (~> 2.8.0)
     tilt (2.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -95,6 +98,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-23
 
 DEPENDENCIES
   aws-sdk-s3 (~> 1.122)
@@ -117,7 +121,7 @@ DEPENDENCIES
   webrick (~> 1.8)
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 3.3.0p0
 
 BUNDLED WITH
    2.4.2

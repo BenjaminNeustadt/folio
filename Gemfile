@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-ruby '3.0.0'
+ruby '3.3.0'
 
 gem "sinatra",         "~> 3.0"
 gem "sinatra-contrib", "~> 3.0"
