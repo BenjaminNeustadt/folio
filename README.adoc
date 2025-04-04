@@ -14,8 +14,12 @@ Benjamin Neustadt
 :source-highlighter: highlightjs
 :highlightjsdir: highlight
 
-
 Refer to 'PLANPREP' for the planning elements of project.
+
+== Intro
+
+This application is a web application that allows users to upload images and
+store them in a database. Using exif data from those images, they are then displayed on a map, allowing users to see where the images were taken and paint a geolocalised picture of a user's travels using those pictures.
 
 == Development/Configuration
 
@@ -50,3 +54,370 @@ Puma starting in single mode...
 * Listening on http://[::1]:9292
 Use Ctrl-C to stop
 ----
+
+
+// URLS
+:url-wireframes: https://wireframepro.mockflow.com/editor.jsp?editor=on&spaceid=MOZ46Ouzcpb&bgcolor=white&perm=Create&pcompany=C9881467f77ac4751b2d1ef58bcf56e59&ptitle=Wireframe&store=yes&category=M8109b08cbb31f7575d869e0b164269401681294000748&projectid=MBVd44JDHh&publicid=d654da6faaa443dcaba282d34c933800#/page/D8bc39e504612c1a86f93aa4f7e5d2a26
+:url-overview-diagram: https://excalidraw.com/#json=GH7CZ3NhDmWhV6MNrjncB,FYbKdFNGDrUQs08N7TisMA
+
+:url-sinatra-activerecord: https://github.com/sinatra-activerecord/sinatra-activerecord
+:url-exifdata: https://github.com/tonytonyjan/exif
+:url-aws-sdk-ruby: https://github.com/aws/aws-sdk-ruby
+:url-mapbox-sdk: https://github.com/mapbox/mapbox-sdk-rb
+:url-stripe: https://github.com/stripe/stripe-ruby
+
+:url-trello: https://trello.com/invite/b/Js1UqM3L/ATTI4bdd78d080eb479a99c58b9ee1c909cd9CB7EED8/ticket-board
+
+== Wireframes
+
+The sections contoured in red are for MVP stage.
+(Customize wireframes {url-wireframes}[here])
+
+image::wireframe.png[wire frame examples]
+
+== Architecture Design/Diagrams
+
+=== Diagrams
+
+==== _OVERVIEW_
+(Customize the overview diagram {url-overview-diagram}[here])
+
+image::overview_diagram.png[wire frame examples]
+
+                                                      ┌────────────────────┐
+                                                      │                    │
+                                                      │       ROUTES       │◄──────────────  HTTP Response
+                                                      │                    │                  (HTML)
+                                                      └─────────┬──────────┘
+                                                                │
+                                                          Forward request to
+     ┌────────────┐                                     appropriate controller
+     │            │                                             │
+     │            │                                   ┌─────────▼───────────┐
+     │            │       ┌─────────────┐             │                     │
+     ├────────────┤◄──────┤             ├────────────►│                     │
+     │  DATABASE  │       │             │             │    ┌───────────┐    │               HTTP Response
+     ├────────────┼──────►│    MODELS   │◄────────────┤    │CONTROLLERS│    ├─────────────►  (HTML)
+     │            │       │             │ read/write  │    └───────────┘    │
+     │            │       │             │    data     │                     │
+     │            │       └─────────────┘             │                     │
+     │            │                                   └───────────▲─────────┘
+     └────────────┘                                               │
+                                                                  │
+                                                                  │
+                                                         ┌────────┴─────────┐
+                                                         │                  │
+                                                         │      VIEWS       │
+                                                         │    (templates)   │
+                                                         │                  │
+                                                         └──────────────────┘
+
+==== _MVC_ 
+
+image::MVC_diagram.png[extraction_of_image_data]
+
+==== Detailed diagram of image data extraction
+
+image::image_extraction_with_metadata.png[extraction_of_image_data]
+
+== Technologies
+
+- Framework:
+
+-- Sinatra
+
+-- React(Potentially) for the front end though later on.
+
+- Cloud:
+
+{url-aws-sdk-ruby}[AWS SS3]
+
+- Model dependencies:
+
+{url-stripe}[Stripe API]
+
+{url-mapbox-sdk}[mapbox-sdk API] 
+
+{url-exifdata}[Exif Data gem tool]
+
+- ORM: 
+
+{url-sinatra-activerecord}[Sinatra ActiveRecord]
+
+- Testing:
+
+-- RSpec (unit testing)
+
+-- Capybara (end to end testing)
+
+-- Jmeter (for load testing/performance testing)
+
+== Kanban
+
+The kanban board of ongoing tickets can be found {url-trello}[here].
+
+== Ideation
+
+=== Moderation of content
+
+The platform should not rely on any standard KYC processes, that can be
+intrusive, and infiringe on privacy of users; nevertheless the issue of
+moderating content so as not to host or display morally unsavoury/illegal
+content needs to be considered carefully.
+
+"Morally unsavoury content" for now refers to any images which are:
+
+-- pornographic in nature AND contain images of children.
+
+-- containing scenes of extreme violence (e.g. beheadings, non-historical murder scenes etc.)
+
+-- documents that immediately identify any persons who does not hold a position of political authority
+
+The terms are currently vague, though will need to be discussed in greater detail.
+
+In order to not burden one person with the onus of moderating what does and does not constitue a moral transgression according to the rules of the site,
+but also to not give one person the power to determine what can and cannot be seen the responsibility should be a collective one. 
+
+==== Sponsorhip link
+
+Therefore, as a temporary solution, users will need to be invited by other users onto the site.
+If one person posts anything that transgresses the rules, then two people are banned, the person committing the offence, along with their sponsor.
+
+==== Jury service
+
+If the site begins to host many users, then when content is flagged, members of the collective will be called on to immediately serve in a sort of randomised jury service.
+If 100 members are on the site, then 10 users will be shown the image and asked to 'Yay' or 'Nay'.
+50% vote either way is required to take action from thereon.
+If a draw, another is made of randomised users.
+
+The users should not be subscribers to the person whose content is under review, as this would naturally instill a bias.
+
+If it is 'Nay', a grace period of 20 days is given for the user to appeal to another jury call, before the users profile is deleted.
+
+During the appeal period, and from the moment of flagging, the image in question is obfuscated, but not deleted from the database.
+
+
+This system will need to be thought through in greater detail.
+
+If the rules are defined well enough, then rather than asking 'Yay' or 'Nay', then it may be easier to ask the jury member:
+"Does the following image infringe on the premise of the following rule: Must not depict an image of a child in a sexual context?"
+OR
+"Does the following image infringe on the premise of the following rule: Must not promote the exclusion or violence towards a person on the basis of their physical appearance?"
+
+If the person that flags the image as infringment reports more than 3 images, that all are deemed 'Yay' by a wider group of deliberators, the reporter is deleted instead.
+
+A qualifying jury member is only someone who is a contributor to the platform. (i.e. hosts a group, hosts images or content online for others to see).
+A contributor is someone who has participated in activity, either in sending messages to other users (be they private or public).
+
+=== Communication channel
+
+The wed application should promote free movement and communication of users whether they are on this platform or others.
+Therefore, the chat should be federated, so that users can send messages to their friends and colleagues on other platforms.
+
+[insert details on the federated stuff here from convo with KOTP]
+
+== To pay or not to pay
+
+Dependent on the desired outcome, it might be an idea to consider users paying a monthly subscription fee in order to have their images hosted.
+The reasonining is simple, hosting images online securely is not free
+- as an example there isn't anywhere I can think of where you can go and dump a bag of your belongings and expect them to remain unscathed, unborrowed, unused if you leave them overnight.
+Ultimately the same will apply to the internet.
+
+
+== User Stories
+
+=== User sign-up and log-in specific
+
+----
+As a user
+So that I can use Folio
+I need to be able to sign-up
+----
+
+----
+As a user
+So that I can start a Folio session
+I need to be able to log-in
+----
+
+----
+As a user
+So that I can finish a Folio session
+I need to be able to log-out
+----
+
+----
+As a user
+So that I can cancel my account
+I need to be able to delete my Folio account and content
+----
+
+----
+As a user
+So that I can cancel my account with certainty
+I need to be asked to confirm deletion of my account
+----
+
+=== Image upload specific
+
+----
+As a user
+So that I can post content to my profile
+I need to be able to upload images
+----
+
+----
+As a user
+So that I can be sure my upload worked
+I need to be given confirmation that the image was uploaded
+----
+
+----
+As a user
+So that I can post content to my profile with context
+I need to be able to write a caption with the content
+----
+
+----
+As a user
+So that I can post content to my profile with context
+I need to be able to choose data is displayed alongside the caption (i.e. date)
+----
+
+----
+As a user
+So that I can view content 
+I need to be able to view content I have uploaded
+----
+
+----
+As a user
+So that I can change my mind
+I need to be able to modify the caption or details of content I have uploaded
+----
+
+----
+As a user
+So that I can change my mind on what I show
+I need to be able to delete content that I uploaded previously
+----
+
+----
+As a user
+So that I can view content with time relevant context
+I need to be able to view content by order of upload
+----
+
+----
+As a user
+So that I can build a community
+I need to be able to subscribe to other users
+----
+
+----
+As a user
+So that I can maintain a community and relations
+I need to be able to be able to communicate with other users via chat
+----
+
+----
+As a user
+So that the interface resonates with me
+I need to be able to customize my own profile (EG: colours, banner)
+----
+
+===  MAP specific
+
+----
+As a user
+So that I can view content with geographical context
+I need to be able to view content I have uploaded on the map
+----
+
+----
+As a user
+So that I can search for images within a location
+I need to be able to hone my search for images that I am searching for
+----
+
+== Front-end sandbox ideas
+
+A submit button that wont let you click it unless the content is inserted
+https://github.com/Jaay06/fun-form-validation.git
+
+Using bootstrap for the navbar styling: https://getbootstrap.com/docs/4.0/components/navs/#tabs
+Same as above: https://getbootstrap.com/docs/4.0/components/navs/#javascript-behavior <<< used this one
+
+
+Detecting the browser's theme with CSS media query prefers-color-scheme:
+https://medium.com/batary/detecting-the-browsers-theme-with-css-media-query-prefers-color-scheme-268456478b63
+
+== Back-end sandbox ideas
+https://github.com/maxjustus/sinatra-authentication
+https://github.com/jeremyevans/rodauth
+
+Why use puma over webrick? https://stackoverflow.com/a/49674630
+
+=== exif reader
+
+the fastest one:
+https://github.com/tonytonyjan/exif <-(used this one)
+
+mini exif:
+https://github.com/janfri/mini_exiftool
+
+Exif Reader:
+https://remvee.github.io/exifr/
+
+https://github.com/remvee/exifr
+
+https://exiftool.org/
+
+https://github.com/minimagick/minimagick
+
+=== map
+
+https://github.com/ankane/mapkick
+
+Tutorial:
+https://www.youtube.com/watch?v=FEj0cJqgcRs
+
+=== stripe
+
+https://github.com/stripe/stripe-ruby
+
+=== database
+
+https://hevodata.com/learn/sqlite-vs-postgresql/#speed
+
+Deleting from the s3 bucket:
+
+https://stackoverflow.com/questions/27421972/unable-to-delete-file-from-amazon-s3-using-ruby-script
+
+=== Organising code base
+
+Consider Sinatra partials gem: https://github.com/yb66/Sinatra-Partial
+
+https://github.com/rubyconfig/config
+
+=== Extra ideas
+
+Integrate the V&A collection:
+
+Users can browse throught the collection and add items to their favourites...encouraging engagement with the museums collection in an interative way...
+
+The users favourites collection gets added to a map, according to the location it was produced, emphasising the diversity of the museums collection
+
+Users can search for items according to their interests...
+
+
+## Considerations for user verification
+1. In the email you will have some call to action. Be mindful of the ways in which that call to action can interact with the server
+      1. anchors are only able to make GET requests
+      2. Maybe you can embed a form in the email, but you'll have to confirm if this is allowed in an email
+      3. The URL (the protocol, host and port) of your server needs to be known ahead of time so that when the email reader
+            interacts with the call to action it can be routed properly
+2. Sending emails takes a long time. This is why ActionMailer exists in Rails, and tpyically emails are passed over to ActiveJob.
+      The idea being that you want to seperate request handling and sending emails.
+3. The URL that handles the call to action for verification must be secure. Otherwise it's useless because anyone can call it
+      1. You need a way to ensure that the URL is unique in some way 

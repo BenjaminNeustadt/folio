@@ -78,6 +78,9 @@ class Application < Sinatra::Base
     else
       redirect('/login')
     end
+
+    # p @current_user.background_color
+    p @current_user.methods.sort
   end
 
   get '/login' do
@@ -138,21 +141,21 @@ class Application < Sinatra::Base
     image_data_to_json()
   }
 
-  # :TODO: think about whether you need both this and the above
+# :TODO: think about whether you need both this and the above
 
   get('/users/:username/images_data.json') {
     image_data_to_json()
   }
 
-   get('/map_page') {
+  get('/map_page') {
       erb(:map_page)
-   }
+  }
 
   get('/current_user_profile') {
     erb(:current_user_profile)
   }
 
-  # :TODO: put this in ExifHelpers module
+# :TODO: put this in ExifHelpers module
 
   post('/upload') {
     store_image
